@@ -4,11 +4,6 @@
   text-align: right;
   line-height: 50px;
 }
-.form-block{
-  margin-left: 80px;
-  margin-top: -30px;
-  width: 700px;
-}
 </style>
 
 <template>
@@ -24,7 +19,7 @@
           <h4>基本信息</h4>
           <hr>
           <div>
-            <label class="form-label">手机号:</label>
+            <label class="form-label">登录手机号:</label>
             <input type="text" class="input" v-model="info.mobile">
           </div>
           <div>
@@ -44,13 +39,13 @@
             <div class="form-block">
               <div class="row">
                 <div class="col-4">
-                  <m-image-uploader unique-id="1" @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
+                  <m-image-uploader unique-id="1" :default="info.pic1"  @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
                 </div>
                 <div class="col-4">
-                  <m-image-uploader unique-id="2" @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
+                  <m-image-uploader unique-id="2" :default="info.pic2"  @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
                 </div>
                 <div class="col-4">
-                  <m-image-uploader unique-id="3" @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
+                  <m-image-uploader unique-id="3" :default="info.pic3"  @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
                 </div>
               </div>
             </div>
@@ -70,7 +65,7 @@
             <input type="text" class="input" v-model="info.id_card">
           </div>
           <div class="pagination-container" style="text-align: right;">
-            <button class="btn btn-primary" @click="onSave()">保存</button>
+            <el-button type="primary" size="large" @click="onSave()" :loading.sync="updateing">保存</el-button>
           </div>
         </div>
       </div>
@@ -93,12 +88,6 @@
           { name: '用户管理' },
           { name: '加盟商编辑' }
         ],
-        traceList: [],
-        traceListPagination: {
-          totalCount: 105,
-          offset: 0,
-          limit: 10
-        },
         info: {
           mobile: '',
           company_name: '',
@@ -106,8 +95,12 @@
           company_desc: '',
           fullname: '',
           tel: '',
-          id_card: ''
-        }
+          id_card: '',
+          pic1: '',
+          pic2: '',
+          pic3: ''
+        },
+        updateing: false
       }
     },
     created () {
@@ -117,13 +110,12 @@
       onUploaded: function (uniqueId, res) {
         uniqueId = parseInt(uniqueId)
         if (uniqueId === 1) {
-          this.info.pic1 = res.fileName
+          this.info.pic1 = res.url
         } else if (uniqueId === 2) {
-          this.info.pic2 = res.fileName
+          this.info.pic2 = res.url
         } else if (uniqueId === 3) {
-          this.info.pic3 = res.fileName
+          this.info.pic3 = res.url
         }
-        console.log('res----', res)
       },
       onRemoved: function (uniqueId) {
         uniqueId = parseInt(uniqueId)
@@ -137,12 +129,12 @@
       },
       onBack: function () {
         this.$router.go({
-          name: 'shopper-shopper'
+          name: 'shopper-supplier-index'
         })
       },
       loadInfo: function () {
         const self = this
-        shopper.dataSupplierOne({shopper_id: this.$route.params.id}).then(function (res) {
+        shopper.supplierOne({shopper_id: this.$route.params.id}).then(function (res) {
           self.info = res.data
         }, function (res) {
           self.$notify({
@@ -154,18 +146,20 @@
       },
       onSave: function () {
         const self = this
-        shopper.dataSupplierUpdate(this.info).then(function (res) {
+        this.updateing = true
+        shopper.supplierUpdate(this.info).then(function (res) {
           self.$notify({
-            title: '新增成功',
+            title: '修改成功',
             message: res.tips,
             type: 'success'
           })
           self.$router.go({
-            name: 'shopper-shopper'
+            name: 'shopper-supplier-index'
           })
         }, function (res) {
+          self.updateing = false
           self.$notify({
-            title: '新增失败',
+            title: '修改失败',
             message: res.tips,
             type: 'warning'
           })

@@ -23,7 +23,7 @@ export default [
       },
       {
         name: '定金结算',
-        path: '/admin/index'
+        path: '/trade/blanace/bill'
       }
     ],
     expanded: true,

@@ -1,10 +1,11 @@
-import api from './api'
+import Vue from 'vue'
+import {CFT} from './constant'
 import localStorage from 'localStorage'
 
 const UserAction = {
   login (data) {
     return new Promise((resolve, reject) => {
-      api.adminLogin(data).then(function (response) {
+      Vue.http.post(`${CFT.BASE_API_URL}/admin/login`, data).then(function (response) {
         response = JSON.parse(response.body)
         localStorage.setItem('token', response.token)
         resolve(response)

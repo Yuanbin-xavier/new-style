@@ -1,5 +1,10 @@
 <style scoped>
-
+  .right {
+    text-align: right;
+  }
+  .table{
+    line-height: 30px;
+  }
 </style>
 
 <template>
@@ -7,11 +12,12 @@
     <m-breadcrumb :items="breadcrumbData"></m-breadcrumb>
     <div class="main-content">
       <div class="main-content-hd">
-        <h3>财务报表</h3>
+        <h3>管理员列表</h3>
         <form>
-          <label class="form-label">付款时间：</label>
-          <input type="date" class="input" v-mode="begin_date" >
-          <input type="date" class="input" v-mode="end_date"  >
+          <div class="right">
+            <input type="text" class="input" v-bind:placeholder="accountType === '订单号' ? '仅支持输入数字' : '请输入关键词'">
+            <button class="btn btn-small" type="button">搜索</button>
+          </div>
         </form>
       </div>
       <div class="main-content-bd">
@@ -21,34 +27,39 @@
               <thead>
                 <tr>
                   <th width="30">#</th>
-                  <th>店铺</th>
-                  <th>订单数量</th>
-                  <th>总额</th>
-                  <th>已结算</th>
-                  <th>未结算</th>
+                  <th>用户名</th>
+                  <th>姓名</th>
+                  <th>电子邮件</th>
+                  <th>手机号</th>
+                  <th>最后一次登录时间</th>
                   <th>操作</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="1 in 7">
-                  <td>1</td>
-                  <td>店铺一</td>
-                  <td>1</td>
-                  <td>299.00</td>
-                  <td>299.00</td>
-                  <td>500</td>
+                <tr v-for="item in traceList">
+                  <td><input type="checkbox"></td>
+                  <td>{{item.admin_name}}</td>
+                  <td>{{item.fullname}}</td>
+                  <td>{{item.email}}</td>
+                  <td>{{item.mobile}}</td>
+                  <td>{{item.created}}</td>
                   <td>
                     <div class="check-buttons">
-                      <button type="button" class="btn btn-green btn-small" @click="save()" style="width: 60px;">导出excel</button>
+                      <button type="button" class="btn btn-red btn-small" @click="onDdit(item.admin_id)">修改</button>
+                      <button type="button" class="btn btn-red btn-small" @click="onBack()" style="width: 60px;">修改密码</button>
                     </div>
                   </td>
                 </tr>
               </tbody>
             </table>
-            <el-pagination
+            <div class="pagination-container">
+              <el-pagination
                   layout="prev, pager, next, jumper, slot, ->, total"
                   :total="pagination.total" :current-page.sync="pagination.index" :page-size="pagination.size" @current-change="onPageChange" @size-change="onPageChange">
-           </el-pagination>
+                </el-pagination>
+                  <button class="btn btn-white btn-small" @click="">反选</button>
+                  <button class="btn btn-white btn-small" @click="">静止登录</button>
+                  <button class="btn btn-white btn-small" @click="">删除</button>
             </div>
           </div>
         </div>
@@ -69,13 +80,11 @@
         breadcrumbData: [
           { name: '用户管理' },
           { name: '管理用户' },
-          { name: '加盟商列表' }
+          { name: '管理员列表' }
         ],
         traceList: [],
-        shop_id: 0,
         keyword: '',
-        begin_date: '',
-        end_date: '',
+        admin_id: '',
         pagination: {
           total: 1,
           size: 10,
@@ -83,14 +92,21 @@
         }
       }
     },
+
     created () {
       this.onPageChange(1, 1)
     },
     methods: {
+      onDdit: function (id) {
+        this.$router.go({
+          name: 'admin-edit',
+          params: {id: id}
+        })
+      },
       onPageChange: function () {
         console.log('...........change..........', this.$route.params.id)
         const self = this
-        shopper.orderinancia({begin_date: this.begin_date, end_date: this.end_date}).then(function (res) {
+        shopper.adminlist({keyword: this.keyword, page_index: this.pagination.index, page_size: this.pagination.size}).then(function (res) {
           self.traceList = res.data
           self.pagination.total = res.data_count
         }, function (res) {

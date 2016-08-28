@@ -1,33 +1,22 @@
 export default [
   {
-    name: '用户管理',
+    name: '管理用户',
     subNav: [
       {
         name: '供应商列表',
-        path: '/shopper/shopper/index'
+        path: '/shopper/supplier/index'
       },
       {
         name: '加盟商列表',
-        path: '/shopper/service/index'
-      },
-      {
-        name: '店员管理',
-        path: '/shopper/shop/index'
+        path: '/shopper/service/index/0'
       },
       {
         name: '店员列表',
         path: '/shopper/staff/index'
-      }
-    ],
-    expanded: true,
-    iconClassName: 'm-icon-search_icon'
-  },
-  {
-    name: '用户管理',
-    subNav: [
+      },
       {
-        name: '供应商列表',
-        path: '/admin/index'
+        name: '管理员列表',
+        path: '/shopper/admin/index'
       }
     ],
     expanded: true,

@@ -3,10 +3,10 @@
     <div class="text-center">
       <h1>404</h1>
 
-      <h3>Page not found</h3>
+      <h3>页面找不到哎～</h3>
 
-      <p>
-        <a class="btn btn-lg btn-danger" v-link="{ path: '/' }">Back to home</a>
+      <p align="center">
+        <a class="btn btn-lg btn-danger" v-link="{ path: '/' }">返回首页</a>
       </p>
     </div>
   </div>

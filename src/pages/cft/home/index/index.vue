@@ -2,27 +2,27 @@
 <div class="index">
     <div class="content">
       <m-breadcrumb :items="breadcrumbData"></m-breadcrumb>
-      
-      <div  class="main-content-block"> 
+
+      <div  class="main-content-block">
         <div class="row">
           <div class="col-6">
             <div class="main-content-hd">
               <div class="white-block">
                 <span class="icon">XX</span> 10 店铺
               </div>
-            </div>  
+            </div>
           </div>
           <div class="col-6">
             <div class="main-content-hd">
               <div class="white-block">
                 <span class="icon">XX</span> 10 店铺
               </div>
-            </div>  
+            </div>
           </div>
         </div>
       </div>
 
-      <div  class="main-content"> 
+      <div  class="main-content">
         <div class="chart" v-echarts="barChartOption" :loading="barChartLoading"></div>
       </div>
     </div>

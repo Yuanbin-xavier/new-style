@@ -156,6 +156,7 @@ a[href] {
   display: inline-block;
   font-size: 14px;
   line-height: 30px;
+  padding-right: 10px;
 }
 .main-content-hd .element-select {
   margin-right: 10px;
@@ -163,7 +164,7 @@ a[href] {
 .main-content-hd input.input {
   display: inline-block;
   margin: 0 16px 0 0;
-  width: 200px;
+  width: 300px;
   height: 30px;
   line-height: 30px;
   font-size: 12px;
@@ -171,11 +172,30 @@ a[href] {
 .main-content-bd input.input {
   display: inline-block;
   margin: 0 16px 0 0;
-  width: 200px;
+  width: 300px;
   height: 30px;
   line-height: 30px;
   font-size: 12px;
 }
+
+.main-content-bd textarea.input {
+  display: inline-block;
+  margin: 0 16px 0 0;
+  width: 500px;
+  line-height: 30px;
+  font-size: 12px;
+  vertical-align: text-top;
+}
+
+.main-content-hd select.select {
+  display: inline-block;
+  margin: 0 16px 0 0;
+  height: 30px;
+  line-height: 30px;
+  font-size: 22px;
+}
+
+
 .main-content-bd {
   padding: 26px 40px 0;
   overflow: hidden;
@@ -235,15 +255,24 @@ a[href] {
 }
 .main-content-bd .detail table {
   margin-bottom: 18px;
+  font-size: 13px;
 }
 .main-content-bd .pagination-container {
   font-size: 12px;
   margin-bottom: 20px;
   margin-top: 20px;
 }
-.main-content-bd .pagination {
+.main-content-bd .el-pagination {
   float: right;
   margin: 0;
+  position: relative;
+  padding-right: 50px;
+  .el-pagination__rightwrapper{
+    float: right;
+    position: absolute;
+    right: 0px;
+    top: 2px;
+  }
 }
 .check-buttons button {
   display: inline-block;
@@ -278,10 +307,17 @@ button.btn-red.disabled {
 }
 
 #nprogress .spinner-icon {
-  border-top-color: red;
+  border-top-color: white;
   border-left-color: #29d;
 }
 
 .pull-right{
-  float: right;
+  position: absolute;
+  right: 60px;
+}
+
+.form-block{
+  margin-left: 110px;
+  margin-top: -30px;
+  width: 700px;
 }

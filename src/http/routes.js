@@ -8,25 +8,37 @@ import Trade from '../pages/cft/trade/index.vue'
 import Coupon from '../pages/cft/coupon/index.vue'
 import Config from '../pages/cft/config/index.vue'
 
-import ShopperInderx from '../pages/cft/shopper/index/index.vue'
-
-import shopper from '../pages/cft/shopper/shopper/index.vue'
-import ShopperSupplierAdd from '../pages/cft/shopper/shopper/add.vue'
-import ShopperSupplierEdit from '../pages/cft/shopper/shopper/edit.vue'
+import shopper from '../pages/cft/shopper/supplier/index.vue'
+import ShopperSupplierAdd from '../pages/cft/shopper/supplier/add.vue'
+import ShopperSupplierEdit from '../pages/cft/shopper/supplier/edit.vue'
 
 import ShopperService from '../pages/cft/shopper/service/index.vue'
 import ShopperServiceEdit from '../pages/cft/shopper/service/edit.vue'
 import ShopperServiceAdd from '../pages/cft/shopper/service/add.vue'
 
 import Shop from '../pages/cft/shopper/shop/index.vue'
+import ShopAdd from '../pages/cft/shopper/shop/add.vue'
+import ShopEdit from '../pages/cft/shopper/shop/edit.vue'
+
 import Staff from '../pages/cft/shopper/staff/index.vue'
 
-import Admin from '../pages/cft/admin/index.vue'
-import AdminIndex from '../pages/cft/admin/users/index.vue'
+import AdminIndex from '../pages/cft/shopper/admin/index.vue'
+import AdminEdit from '../pages/cft/shopper/admin/edit.vue'
 
 import OrderIndex from '../pages/cft/trade/order/index.vue'
 import OrderTop from '../pages/cft/trade/order/top.vue'
+import OrderDetails from '../pages/cft/trade/order/orderdetails.vue'
+
 import BlanaceReport from '../pages/cft/trade/blanace/report.vue'
+import BlanaceBill from '../pages/cft/trade/blanace/bill.vue'
+
+import VouchersIndex from '../pages/cft/coupon/vouchers/index.vue'
+import VouchersVouchers from '../pages/cft/coupon/vouchers/vouchers.vue'
+
+import BrandIndex from '../pages/cft/config/brand/index.vue'
+import DeviceLinelist from '../pages/cft/config/brand/devicelist.vue'
+import DrandFacility from '../pages/cft/config/brand/facility.vue'
+
 module.exports = {
   '/': {
     component: Home,
@@ -49,66 +61,70 @@ module.exports = {
     component: Login,
     name: 'login'
   },
-  '/admin': {
-    component: Admin,
-    name: 'admin',
-    subRoutes: {
-      '/index': {
-        component: AdminIndex,
-        auth: true,
-        name: 'admin-admin'
-      }
-    }
-  },
   '/shopper': {
     component: Shopper,
     name: 'shopper',
     auth: true,
     subRoutes: {
-      '/index': {
-        component: ShopperInderx,
-        auth: true,
-        name: 'shopper-index'
-      },
-      '/shopper/index': {
+      '/supplier/index': {
         component: shopper,
         auth: true,
-        name: 'shopper-shopper'
+        name: 'shopper-supplier-index'
       },
-      '/shopper/add': {
+      '/supplier/add': {
         component: ShopperSupplierAdd,
         auth: true,
         name: 'shopper-supplier-add'
       },
-      '/shopper/edit/:id': {
+      '/supplier/edit/:id': {
         component: ShopperSupplierEdit,
         auth: true,
         name: 'shopper-supplier-edit'
       },
-      '/service/index': {
+      '/service/index/:id': {
         component: ShopperService,
         auth: true,
-        name: 'service-index'
+        name: 'shopper-service-index'
       },
       '/service/add': {
         component: ShopperServiceAdd,
         auth: true,
-        name: 'service-add'
+        name: 'shopper-service-add'
       },
       '/service/edit/:id': {
         component: ShopperServiceEdit,
         auth: true,
-        name: 'service-add'
+        name: 'shopper-service-edit'
       },
-      '/shop/index': {
+      '/shop/index/:id': {
         component: Shop,
         auth: true,
-        name: 'shop-index'
+        name: 'shopper-shop-index'
+      },
+      '/shop/add': {
+        component: ShopAdd,
+        auth: true,
+        name: 'shopper-shop-add'
+      },
+      '/shop/edit/:id': {
+        component: ShopEdit,
+        auth: true,
+        name: 'shopper-shop-edit'
       },
       '/staff/index': {
         component: Staff,
         auth: true,
-        name: 'shop-staff'
+        name: 'shopper-shop-staff'
+      },
+      '/admin/index': {
+        component: AdminIndex,
+        auth: true,
+        name: 'shopper-admin-index'
+      },
+      '/admin/edit/:id': {
+        component: AdminEdit,
+        auth: true,
+        name: 'admin-edit'
       }
     }
   },
@@ -120,27 +136,69 @@ module.exports = {
       '/order/index': {
         component: OrderIndex,
         auth: true,
-        name: 'order-index'
+        name: 'trade-order-index'
       },
       '/order/top': {
         component: OrderTop,
         auth: true,
-        name: 'order-top'
+        name: 'trade-order-top'
       },
       '/blanace/report': {
         component: BlanaceReport,
         auth: true,
-        name: 'blanace-report'
+        name: 'trade-blanace-report'
+      },
+      '/blanace/bill': {
+        component: BlanaceBill,
+        auth: true,
+        name: 'blanae-bill'
+      },
+      'order/orderdetails/:id': {
+        component: OrderDetails,
+        auth: true,
+        name: 'order-orderdetails'
       }
     }
   },
   '/coupon': {
     component: Coupon,
-    name: 'coupon'
+    auth: true,
+    name: 'coupon',
+    subRoutes: {
+      '/vouchers/index': {
+        component: VouchersIndex,
+        auth: true,
+        name: 'vouchers-index'
+      },
+      '/vouchers/vouchers/:id': {
+        component: VouchersVouchers,
+        auth: true,
+        name: 'vouchers-vouchers'
+      }
+    }
   },
+
   '/config': {
     component: Config,
-    name: 'config'
+    name: 'config',
+    auth: true,
+    subRoutes: {
+      '/brand/index': {
+        component: BrandIndex,
+        auth: true,
+        name: 'brand-index'
+      },
+      '/brand/devicelist': {
+        component: DeviceLinelist,
+        auth: true,
+        name: 'device-list'
+      },
+      '/brand/facility': {
+        component: DrandFacility,
+        auth: true,
+        name: 'device-facility'
+      }
+    }
   },
   '*': {
     component: NotFound

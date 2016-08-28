@@ -5,8 +5,6 @@ export default function (Vue) {
   Vue.http.interceptors.push((request, next, router) => {
     NProgress.start()
     request.headers['Authorization'] = localStorage.getItem('token')
-    console.log('token', localStorage.getItem('token'))
-    console.log(request.headers['Authorization'])
     var timeout
     if (request.timeout) {
       timeout = setTimeout(() => {
@@ -26,7 +24,6 @@ export default function (Vue) {
         return router.app.$dispatch('signin')
       }
       NProgress.done()
-      console.log('.....response.......done.........')
       return response
     })
   })

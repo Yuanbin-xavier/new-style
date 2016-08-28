@@ -1,40 +1,3 @@
-<style lang="less" scoped>
-  .login{
-    margin: 0px auto;
-    width: 400px;
-    overflow: hidden;
-    text-align: center;
-  }
-  .border {
-    position: absolute;
-    width: 400px;
-    height: 400px;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
-    background-color: white;
-    resize: both;
-    overflow: auto;
-    padding: 20px;
-    border-radius: 3px;
-  }
-  .border input {
-    height: 40px;
-  }
-  .col-12 {
-    line-height: 40px;
-    text-align: left;
-    padding-top: 20px;
-  }
-  .col-12 button {
-    margin-top: 50px;
-    height: 40px;
-    font-size: 20px;
-  }
-</style>
-
 <template>
   <div class="login">
     <div class="border">
@@ -59,6 +22,42 @@
   </div>
 </template>
 
+<style lang="less" scoped>
+  .login{
+    margin: 0px auto;
+    width: 400px;
+    overflow: hidden;
+    text-align: center;
+  }
+  .border {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    background-color: white;
+    resize: both;
+    overflow: auto;
+    padding: 40px;
+  }
+  .border input {
+    height: 40px;
+  }
+  .col-12 {
+    line-height: 40px;
+    text-align: left;
+    padding-top: 20px;
+  }
+  .col-12 button {
+    margin-top: 50px;
+    height: 40px;
+    font-size: 20px;
+  }
+</style>
+
 <script>
   import { user } from '../../api'
   export default {
@@ -76,10 +75,7 @@
             type: 'success'
           })
         }, res => {
-          console.log(res)
-          self.$notify({
-            title: '登录失败',
-            message: res.tips,
+          self.$alert(res.tips, '登录失败', {
             type: 'warning'
           })
         })

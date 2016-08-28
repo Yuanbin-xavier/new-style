@@ -1,9 +1,10 @@
-import api from './api'
+import Vue from 'vue'
+import {CFT} from './constant'
 
 const UploaderAction = {
-  do (data) {
+  image (data) {
     return new Promise((resolve, reject) => {
-      api.upload(data).then(function (response) {
+      Vue.http.post(`${CFT.BASE_API_URL}/admin_upload/image`, data).then(function (response) {
         resolve(response.data)
       }, function (response) {
         reject(response.data)

@@ -4,11 +4,6 @@
   text-align: right;
   line-height: 50px;
 }
-.form-block{
-  margin-left: 80px;
-  margin-top: -30px;
-  width: 700px;
-}
 </style>
 
 <template>
@@ -24,7 +19,7 @@
           <h4>基本信息</h4>
           <hr>
           <div>
-            <label class="form-label">手机号:</label>
+            <label class="form-label">登录手机号:</label>
             <input type="text" class="input" v-model="info.mobile">
           </div>
           <div>
@@ -90,16 +85,10 @@
     data () {
       return {
         breadcrumbData: [
-          { name: '我的NLE' },
           { name: '用户管理' },
-          { name: '加盟商编辑' }
+          { name: '管理用户' },
+          { name: '加盟商添加' }
         ],
-        traceList: [],
-        traceListPagination: {
-          totalCount: 105,
-          offset: 0,
-          limit: 10
-        },
         info: {
           mobile: '',
           company_name: '',
@@ -119,13 +108,12 @@
       onUploaded: function (uniqueId, res) {
         uniqueId = parseInt(uniqueId)
         if (uniqueId === 1) {
-          this.info.pic1 = res.fileName
+          this.info.pic1 = res.url
         } else if (uniqueId === 2) {
-          this.info.pic2 = res.fileName
+          this.info.pic2 = res.url
         } else if (uniqueId === 3) {
-          this.info.pic3 = res.fileName
+          this.info.pic3 = res.url
         }
-        console.log('res----', res)
       },
       onRemoved: function (uniqueId) {
         uniqueId = parseInt(uniqueId)
@@ -139,20 +127,20 @@
       },
       onBack: function () {
         this.$router.go({
-          name: 'shopper-shopper'
+          name: 'shopper-supplier-index'
         })
       },
       onSave: function () {
         const self = this
         this.updateing = true
-        shopper.dataSupplierAdd(this.info).then(function (res) {
+        shopper.supplierAdd(this.info).then(function (res) {
           self.$notify({
             title: '新增成功',
             message: res.tips,
             type: 'success'
           })
           self.$router.go({
-            name: 'shopper-shopper'
+            name: 'shopper-supplier-index'
           })
         }, function (res) {
           self.updateing = false
@@ -165,4 +153,4 @@
       }
     }
   }
-</script> 
+</script>

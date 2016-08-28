@@ -1,5 +1,5 @@
-<style scoped>
- .alert-message {
+ <style soped>
+  .alert-message {
     margin: 30px 0;
     text-align: center;
   }
@@ -32,62 +32,79 @@
   .main-content-hd button {
     float: right;
   }
-  .filter button {
-    margin: 20px 0 20px 100px;
-  }
 </style>
-
 <template>
   <div class="content">
     <m-breadcrumb :items="breadcrumbData"></m-breadcrumb>
     <div class="main-content">
-      <div class="main-content-hd">
-        <button class="btn btn-white btn-small" @click="save()">返回</button>
-        <h3>销售排名</h3>
+      <div class="main-content-hd ">
+        <h3>管理抵用券</h3>
         <form>
-          <label class="form-label">成交时间：</label>
-          <el-date-picker
-              type="daterange"
-              placeholder="选择日期范围"
-              style="width: 240px;"
-              :value.sync="pickedDate">
-          </el-date-picker>
+          <label class="form-label"> 报错时间：</label>
+            <span class="align-left">
+              <el-date-picker
+                  type="daterange"
+                  placeholder="选择日期范围"
+                  style="width: 240px;"
+                  :value.sync="pickedDate">
+              </el-date-picker>
+            </span>
           <select style="width: 100px; font-size: 18px; margin-left: 20px;" v-model="shopper_id">
-            <option value="0">不限店铺</option>
+            <option value="0">店铺</option>
             <option value="volvo" v-for="option in supplierList" v-bind:value="option.shopper_id">{{option.fullname}}</option>
+            <option value="volvo">店铺二</option>
           </select>
           <select style="width: 100px; font-size: 18px; margin-left: 20px;">
-            <option value="volvo">不限员工</option>
-            <option value="volvo">业余员</option>
-            <option value="volvo">施工人员</option>
+            <option value="volvo">状态</option>
+            <option value="volvo">已审核</option>
+            <option value="volvo">未审核</option>
+            <option value="volvo">拒绝</option>
           </select>
-          <label class="form-label" >商品标题：</label>
-          <input type="text" class="input" style="width: 100px;" value="输入关键字">
+          <div style="float: right">
+            <button class="btn btn-white btn-small" >搜索</button>
+          </div>
         </form>
-        <div class="main-content-bd detail">
-          <table class="table">
-            <thead>
-              <tr>
-                <th width="30">#</th>
-                <th>店铺</th>
-                <th>员工</th>
-                <th>订单</th>
-              </tr>
-            </thead>
+      </div>
+      <div class="main-content-bd">
+        <table class="table">
+          <thead>
+            <tr>
+              <th width="30">ID</th>
+              <th>店铺</th>
+              <th>审核状态</th>
+              <th>类型</th>
+              <th>类型值</th>
+              <th>最低消费</th>
+              <th>失效时间</th>
+              <th>使用/生成数量</th>
+              <th>操作</th>
+            </tr>
+          </thead>
           <tbody>
-            <tr v-for="1 in 5">
-              <td>1</td>
-              <td>店铺一</td>
-              <td>马超</td>
-              <td>100单</td>
+            <tr v-for="item in traceList">
+              <td>{{item.coupon_rule_id}}</td>
+              <td>{{item.company_name}}</td>
+              <th>{{item.status_id}}</th>
+              <td>{{item.coupon_name}}</td>
+              <td>{{item.coupon_value}}</td>
+              <td>{{item.min_payment}}</td>
+              <td>{{item.expire_datetime}}</td>
+              <td>{{item.qty}} </td>
+              <td>
+                <div class="check-buttons">
+                  <button class="btn btn-green btn-small" @click="">审核</button>
+                  <button class="btn btn-red btn-small" @click="onView(item.coupon_rule_id)">查看</button>
+              </div>
+              </td>
             </tr>
           </tbody>
         </table>
-      <div class="pagination-container" style="padding-bottom: 30px;">
-       <el-pagination
+        <div class="pagination-container" style="padding-bottom: 30px;">
+          <el-pagination
                   layout="prev, pager, next, jumper, slot, ->, total"
                   :total="pagination.total" :current-page.sync="pagination.index" :page-size="pagination.size" @current-change="onPageChange" @size-change="onPageChange">
            </el-pagination>
+        </div>
       </div>
     </div>
   </div>
@@ -109,8 +126,8 @@
         ],
         traceList: [],
         supplierList: [],
-        employeeslist: [],
         shop_id: 0,
+        status_id: 0,
         shopper_id: 0,
         keyword: '',
         pagination: {
@@ -132,7 +149,8 @@
       onPageChange: function () {
         console.log('...........change..........', this.$route.params.id)
         const self = this
-        shopper.oalesrank().then(function (res) {
+
+        shopper.couponlist({page_index: this.pagination.index, page_size: this.pagination.size, shop_id: this.shop_id, status_id: this.status_id}).then(function (res) {
           self.traceList = res.data
           self.pagination.total = res.data_count
         }, function (res) {
@@ -142,7 +160,13 @@
             type: 'warning'
           })
         })
+      },
+      onView: function (id) {
+        this.$router.go({
+          name: 'vouchers-vouchers',
+          params: {id: id}
+        })
       }
     }
-  }
+}
 </script>

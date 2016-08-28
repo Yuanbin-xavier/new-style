@@ -5,18 +5,23 @@
          v-bind:class="{'processing' : uploading, 'large': size === 'large', 'round': shape === 'round', 'full': size === 'full', 'rectangle': shape === 'rectangle' }"/>
     <input v-on:change="processFile" type="file" :id="'profile-upload-' + uniqueId"/>
     </label>
-    <div class="upload-progress-container" v-show="uploading">
-    <span class="upload-progress-bar"
-          v-bind:style="{width: uploadPercentage + '%'}"></span>
+
+    <div class ="upload-status">
+      <div class="upload-progress-container" v-show="uploading">
+      <span class="upload-progress-bar"
+            v-bind:style="{width: uploadPercentage + '%'}" ></span>
+      </div>
+
+      <el-button v-if="deleteBtnShow" type="danger" size="small" icon="circle-close" @click="onDelete();">删除</el-button>
+
+      <div class="tips" v-if="!deleteBtnShow">只能上传jpg文件，且不超过500kb</div>
     </div>
     <!-- <p class="upload-message"
     v-bind:class="{'error': uploadStatus === 'error', 'success': uploadStatus === 'success'}"
     v-show="uploadMsg !== ''">{{ uploadMsg }}
     </p> -->
-    <center>
-      <el-button v-if="deleteBtnShow" type="danger" size="small" icon="circle-close" @click="onDelete">删除</el-button>
-    </center>
   </div>
+
 </template>
 
 <style scoped lang="less">
@@ -24,19 +29,36 @@
   @primary_dark: dark;
   @danger: red;
   .single-image-uploader-box {
+    text-align: center;
+    margin: 0px auto;
+    width: 200px;
+    .upload-status{
+      height: 30px;
+      vertical-align: text-bottom;
+      position: relative;
+      .tips{
+        font-size: 12px;
+        position: absolute;
+        bottom: 0px;
+      }
+      button{
+        margin-top: 5px;
+      }
+    }
     .profile-image {
       width: 200px;
       height: 200px;
       margin: 0 auto;
       display: block;
-      border: 1px solid #cccccc;
+      border: 1px solid #C0CCDA;
+      background-color: #F9FAFC;
 
       &.processing {
         filter: grayscale(100%);
       }
 
       &.large {
-        width: 150px;
+        width: 200px;
         height: 150px;
       }
 
@@ -101,9 +123,9 @@
   }
 </style>
 
-<script type="text/babel">
+<script >
 import { uploader } from '../../api'
-import defaultImg from '../../assets/default_image.png'
+import defaultImg from '../../assets/default_image.gif'
 module.exports = {
   props: {
     default: {
@@ -139,10 +161,18 @@ module.exports = {
 
   computed: {
     imageSrc () {
+      if (this.default.length === 0 || this.default === defaultImg) {
+        this.imageSource = defaultImg
+        this.deleteBtnShow = false
+        this.uploading = true
+      } else {
+        this.imageSource = this.default
+        this.uploading = false
+        this.deleteBtnShow = true
+      }
       return this.imageSource ? this.imageSource : this.default
     }
   },
-
   methods: {
     processFile (ev) {
       var file = ev.target.files[0]
@@ -166,16 +196,16 @@ module.exports = {
       var self = this
       fileReader.onload = function (ev) {
         self.uploading = true
-        self.imageSource = ev.target.result
+        self.imageSource = this.default = ev.target.result
       }
       fileReader.readAsDataURL(file)
       this.uploadFile(file)
     },
 
     uploadFile (file) {
-      uploader.do(this.prepareFormData(file), this.getUploadOptions())
-                .then(res => this.onUploadSuccess(res))
-                .catch(err => this.onUploadFailed(err))
+      uploader.image(this.prepareFormData(file), this.getUploadOptions())
+              .then(res => this.onUploadSuccess(res))
+              .catch(err => this.onUploadFailed(err))
     },
 
     prepareFormData: function (file) {
@@ -223,12 +253,12 @@ module.exports = {
     },
 
     onDelete () {
+      this.deleteBtnShow = false
       this.imageSource = ''
       this.uploadMsg = ''
       this.uploading = true
       this.uploadStatus = ''
       this.uploadPercentage = 0
-      this.deleteBtnShow = false
       this.$emit('on-removed', this.uniqueId)
     }
   }

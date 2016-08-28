@@ -13,23 +13,14 @@
         <h3>供应商列表</h3>
         <form>
           <div class="right">
-            <select style="width: 100px; font-size: 18px; margin-left: 10px;">
-              <option value="volvo">不限</option>
-              <option value="volvo">供应商1</option>
-              <option value="volvo">供应商2</option>
-            </select>
-            <select style="width: 100px; font-size: 18px; margin-left: 10px;">
-              <option value="volvo">不限</option>
-              <option value="volvo">加盟商1</option>
-              <option value="volvo">加盟商2</option>
-            </select>
             <input type="text" class="input" placeholder="请输入关键词" v-model="keyword">
-            <button class="btn btn-small" type="button">搜索</button>
+            <button class="btn btn-small" type="button"><i class="icon icon-search" ></i> </button>
           </div>
         </form>
       </div>
+
       <div class="main-content-bd">
-        <div class="main-content-bd-block ">
+        <div class="main-content-bd-block detail">
           <div class="traceList">
             <table  class="table">
               <thead>
@@ -56,18 +47,17 @@
                   <td>
                     <div class="check-buttons">
                       <button type="button" class="btn btn-gray btn-small" @click="onEdit(item.shopper_id)" >修改</button>
-                      <button type="button" class="btn btn-small">店员</button>
+                      <button type="button"  class="btn btn-green btn-small" @click="goService(item.shopper_id)" >加盟商</button>
                     </div>
                   </td>
                 </tr>
               </tbody>
             </table>
             <div class="pagination-container" v-if="this.traceList.length > 0">
-              <m-pagination
-                  :total-count="traceListPagination.totalCount"
-                  :offset="traceListPagination.offset"
-                  :limit="traceListPagination.limit"
-                  :callback="changePage"></m-pagination>
+                <el-pagination
+                  layout="prev, pager, next, jumper, slot, ->, total"
+                  :total="pagination.total" :current-page.sync="pagination.index" :page-size="pagination.size" @current-change="onPageChange" @size-change="onPageChange">
+                </el-pagination>
                   <button class="btn btn-white btn-small" @click="onReverse()">反选</button>
                   <button class="btn btn-white btn-small" @click="onDelete()">删除</button>
             </div>
@@ -89,21 +79,21 @@
     data () {
       return {
         breadcrumbData: [
-          { name: '我的NLE' },
           { name: '用户管理' },
-          { name: '4S店列表' }
+          { name: '管理用户' },
+          { name: '供应商列表' }
         ],
         traceList: [],
         keyword: '',
-        traceListPagination: {
-          totalCount: 105,
-          offset: 0,
-          limit: 10
+        pagination: {
+          total: 1,
+          size: 10,
+          index: 1
         }
       }
     },
     created () {
-      this.changePage(1, 10)
+      this.onPageChange(1, 1)
     },
     methods: {
       onDelete () {
@@ -120,24 +110,42 @@
           })
           return false
         }
-        shopper.dataShoperDelete({shopper_id_arr: checkedList}).then(function (res) {
-          self.$notify({
-            title: '操作成功',
-            message: res.tips,
-            type: 'success'
+
+        this.$confirm('删除后将不可恢复，确定要删除吗?', '提示', {
+          type: 'warning'
+        }).then(() => {
+          shopper.supplierDelete({shopper_id_arr: checkedList}).then(function (res) {
+            self.$notify({
+              title: '操作成功',
+              message: res.tips,
+              type: 'success'
+            })
+            self.pagination.index = 1
+            self.onPageChange()
+          }, function (res) {
+            self.$notify({
+              title: '操作失败',
+              message: res.tips,
+              type: 'warning'
+            })
           })
-          self.changePage(1, 10)
-        }, function (res) {
+        }).catch(() => {
           self.$notify({
-            title: '操作失败',
-            message: res.tips,
-            type: 'warning'
+            title: '提示',
+            message: '已取消删除',
+            type: 'info'
           })
         })
       },
       onReverse: function () {
         this.traceList.forEach(function (val, index) {
           val.checked = !val.checked
+        })
+      },
+      goService: function (id) {
+        this.$router.go({
+          name: 'shopper-service-index',
+          params: {id: id}
         })
       },
       onEdit: function (id) {
@@ -151,10 +159,12 @@
           name: 'shopper-supplier-add'
         })
       },
-      changePage: function (offset, limit) {
+      onPageChange: function () {
+        console.log('...........change..........')
         const self = this
-        shopper.dataSupplierList({keyword: this.keyword, pageIndex: offset, pageSize: limit}).then(function (res) {
+        shopper.supplierList({keyword: this.keyword, pageIndex: this.pagination.index, pageSize: this.pagination.size}).then(function (res) {
           self.traceList = res.data
+          self.pagination.total = res.data_count
         }, function (res) {
           self.$notify({
             title: '拉取失败',
