@@ -11,6 +11,10 @@ export default [
         path: '/shopper/service/index/0'
       },
       {
+        name: '店铺列表',
+        path: '/shopper/shop/index/0'
+      },
+      {
         name: '店员列表',
         path: '/shopper/staff/index'
       },
@@ -20,6 +24,6 @@ export default [
       }
     ],
     expanded: true,
-    iconClassName: 'm-icon-search_icon'
+    iconClassName: 'iconfont icon-icon_password'
   }
 ]

@@ -1,15 +1,17 @@
 <template>
-  <side-nav :structure="navData"></side-nav>
+  <m-header></m-header>
+  <m-side-nav :structure="navData"></m-side-nav>
   <router-view></router-view>
 </template>
 
 <script>
-  import SideNav from '../../../common/components/side-nav.vue'
+  import { MHeader, MSideNav } from '../../../common/components/'
   import navData from './navData.js'
 
   export default {
     components: {
-      SideNav
+      MHeader,
+      MSideNav
     },
     data () {
       return {
@@ -18,6 +20,4 @@
     }
   }
 </script>
-
-
 

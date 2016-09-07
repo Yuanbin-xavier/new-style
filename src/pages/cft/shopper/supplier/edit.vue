@@ -65,7 +65,7 @@
             <input type="text" class="input" v-model="info.id_card">
           </div>
           <div class="pagination-container" style="text-align: right;">
-            <el-button type="primary" size="large" @click="onSave()" :loading.sync="updateing">保存</el-button>
+            <button class="btn btn-primary btn-small"  @click="onSave()">保存</button>
           </div>
         </div>
       </div>
@@ -74,11 +74,10 @@
 </template>
 
 <script>
-  import { MBreadcrumb, MImageUploader } from '../../../../common/components/'
+  import { MImageUploader } from '../../../../common/components/'
   import { shopper } from '../../../../api'
   export default {
     components: {
-      MBreadcrumb,
       MImageUploader
     },
     data () {

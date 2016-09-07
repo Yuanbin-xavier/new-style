@@ -39,7 +39,7 @@
           <h4>基本信息</h4>
           <hr>
           <div>
-            <label class="form-label">供应商:</label>
+            <label class="form-label">加盟商:</label>
             <select class="select"  v-model="info.shopper_id">
               <option v-for="option in serviceList" v-bind:value="option.shopper_id">
                 {{ option.company_name }}
@@ -49,6 +49,12 @@
           <div>
             <label class="form-label">店铺名称:</label>
             <input type="text" class="input"  v-model="info.shop_name">
+          </div>
+          <div>
+            <label class="form-label">店铺LOGO:</label>
+            <div class="form-block" style="width:100px">
+              <m-image-uploader unique-id="0" :default="info.logo" @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
+            </div>  
           </div>
           <div>
             <label class="form-label">店铺介绍:</label>
@@ -68,19 +74,19 @@
             <div class="form-block">
               <div class="row">
                 <div class="col-4">
-                  <m-image-uploader unique-id="1" @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
+                  <m-image-uploader unique-id="1" :default="info.pic1" @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
                 </div>
                 <div class="col-4">
-                  <m-image-uploader unique-id="2" @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
+                  <m-image-uploader unique-id="2" :default="info.pic2" @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
                 </div>
                 <div class="col-4">
-                  <m-image-uploader unique-id="3" @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
+                  <m-image-uploader unique-id="3" :default="info.pic3" @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
                 </div>
                 <div class="col-4">
-                  <m-image-uploader unique-id="4" @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
+                  <m-image-uploader unique-id="4" :default="info.pic4" @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
                 </div>
                 <div class="col-4">
-                  <m-image-uploader unique-id="5" @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
+                  <m-image-uploader unique-id="5" :default="info.pic5" @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
                 </div>
               </div>
             </div>
@@ -102,7 +108,7 @@
             <div class="form-block">
               <div class="row">
                 <div class="col-4">
-                  <m-image-uploader unique-id="6" @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
+                  <m-image-uploader unique-id="6" :default="info.pic" @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
                 </div>
               </div>
             </div>
@@ -176,6 +182,8 @@
           this.info.pic5 = res.url
         } else if (uniqueId === 6) {
           this.info.pic = res.url
+        } else if (uniqueId === 0) {
+          this.info.logo = res.url
         }
       },
       onRemoved: function (uniqueId) {
@@ -192,6 +200,8 @@
           this.info.pic5 = ''
         } else if (uniqueId === 6) {
           this.info.pic = ''
+        } else if (uniqueId === 0) {
+          this.info.logo = ''
         }
       },
       onBack: function () {
@@ -209,10 +219,7 @@
             message: res.tips,
             type: 'success'
           })
-          self.$router.go({
-            name: 'shopper-shop-index',
-            params: {id: 0}
-          })
+          window.history.go(-1)
         }, function (res) {
           self.updateing = false
           self.$notify({

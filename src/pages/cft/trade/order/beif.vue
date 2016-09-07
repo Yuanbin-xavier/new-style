@@ -1,16 +1,44 @@
 <style scoped>
-  .traceList table{
-    line-height: 30px;
-    font-size: 13px;
+ .alert-message {
+    margin: 30px 0;
     text-align: center;
   }
-  .span{ text-align: center; }
-  .table td, .table th{
+  .alert-buttons {
+    margin: 30px 0;
     text-align: center;
   }
- .right{
-  text-align: right;
- }
+  .alert-buttons button {
+    display: inline-block;
+  }
+  .freezing-log {
+    margin-bottom: 24px;
+  }
+  .main-content-hd a {
+    font-size: 8px;
+    float: right;
+  }
+  .main-input {
+    padding-left: 15px;
+    padding-top: 15px;
+  }
+  .main-frame {
+    margin-bottom: 18px;
+    padding: 14px 0;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(223, 226, 231, 0.20);
+    font-size: 0;
+  }
+  .main-content-hd button {
+    float: right;
+  }
+  .filter button {
+    margin: 20px 0 20px 100px;
+  }
+  .el-date-editor__editor{
+    height: 30px;
+  }
+
 </style>
 
 <template>
@@ -18,57 +46,50 @@
     <m-breadcrumb :items="breadcrumbData"></m-breadcrumb>
     <div class="main-content">
       <div class="main-content-hd">
-        <h3>销售排行</h3>
+        <button class="btn btn-white btn-small" @click="save()">返回</button>
+        <h3>销售排名</h3>
         <form>
-          <div class="right">
-             <select style="width: 100px; font-size: 18px; margin-left: 20px;" v-model="shop_id">
+          <label class="form-label">成交时间：</label>
+          <el-date-picker
+              type="daterange"
+              placeholder="选择日期范围"
+              style="width: 240px;"
+              :value.sync="pickedDate">
+          </el-date-picker>
+          <select style="width: 100px; font-size: 18px; margin-left: 20px;" v-model="shop_id">
             <option value="0">不限店铺</option>
             <option value="volvo" v-for="option in supplierList" v-bind:value="option.shop_id">{{option.shop_name}}</option>
           </select>
-          <select style="width: 100px; font-size: 18px; margin-left: 20px;" v-model="shopper_id">
-            <option value="0">不限员工</option>
-            <option value="volvo">业务员</option>
+          <select style="width: 100px; font-size: 18px; margin-left: 20px;">
+            <option value="volvo">不限员工</option>
+            <option value="volvo">业余员</option>
             <option value="volvo">施工人员</option>
           </select>
-         <label class="form-label" style="margin-left: 20px;">付款时间:</label>
-           <el-date-picker
-              type="daterange"
-              placeholder="选择日期范围"
-              style="width: 240px; text-align: left;"
-              :value.sync="pickedDate">
-          </el-date-picker>
-            </span>
-            <button class="btn btn-small" type="button" style="margin-left: 20px;" @click="onPagePull"><i class="icon icon-search" ></i> </button>
-          </div>
         </form>
-      </div>
-      <div class="main-content-bd">
-        <div class="main-content-bd-block detail">
-          <div class="traceList">
-            <table class="table">
+        <div class="main-content-bd detail">
+          <table class="table">
             <thead>
               <tr>
+                <th width="30">#</th>
                 <th>店铺</th>
                 <th>员工</th>
                 <th>订单</th>
               </tr>
             </thead>
           <tbody>
-            <tr v-for="item in rankingList">
+            <tr v-for="item in traceList">
+              <td>1</td>
               <td>{{item.shop_id}}</td>
               <td>{{item.saler_shopper_id}}</td>
               <td>{{item.order_qty}}</td>
             </tr>
           </tbody>
         </table>
-          <div class="pagination-container" style="padding-bottom: 30px;">
-          <el-pagination
+      <div class="pagination-container" style="padding-bottom: 30px;">
+       <el-pagination
                   layout="prev, pager, next, jumper, slot, ->, total"
-                  :total="pagination.total" :current-page.sync="pagination.index" :page-size="pagination.size" @current-change="onPagePull" @size-change="onPagePull">
+                  :total="pagination.total" :current-page.sync="pagination.index" :page-size="pagination.size" @current-change="onPageChange" @size-change="onPageChange">
           </el-pagination>
-          </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -77,7 +98,6 @@
 <script>
   import { MBreadcrumb } from '../../../../common/components/'
   import { shopper } from '../../../../api'
-  import moment from 'moment'
   export default {
     components: {
       MBreadcrumb
@@ -89,14 +109,11 @@
           { name: '订单管理' },
           { name: '销售排名' }
         ],
-        rankingList: [],
+        traceList: [],
         supplierList: [],
         employeeslist: [],
         shop_id: 0,
         shopper_id: 0,
-        begin_datetime: '',
-        end_datetime: '',
-        pickedDate: null,
         keyword: '',
         pagination: {
           total: 1,
@@ -106,7 +123,7 @@
       }
     },
     created () {
-      this.onPagePull()
+      this.onPageChange(1, 1)
       const self = this
       shopper.deviceshoplist({keyword: this.keyword, shopper_id: this.shopper_id, page_index: this.pagination.index, page_size: this.pagination.size}).then(function (res) {
         self.supplierList = res.data
@@ -114,15 +131,11 @@
       })
     },
     methods: {
-      onPagePull: function () {
-        if (this.pickedDate) {
-          this.begin_datetime = moment(this.pickedDate[0]).format('YYYY-MM-DD')
-          this.end_datetime = moment(this.pickedDate[1]).format('YYYY-MM-DD')
-        }
+      onPageChange: function () {
         console.log('...........change..........', this.$route.params.id)
         const self = this
-        shopper.ordersales({page_index: this.pagination.index, page_size: this.pagination.size, begin_datetime: this.begin_datetime, end_datetime: this.end_datetime, shop_id: this.shop_id, shopper_id: this.shopper_id}).then(function (res) {
-          self.rankingList = res.data
+        shopper.ordersales().then(function (res) {
+          self.traceList = res.data
           self.pagination.total = res.data_count
         }, function (res) {
           self.$notify({
@@ -134,4 +147,4 @@
       }
     }
   }
-  </script>
+</script>

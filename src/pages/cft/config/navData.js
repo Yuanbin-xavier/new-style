@@ -12,6 +12,6 @@ export default [
       }
     ],
     expanded: true,
-    iconClassName: 'm-icon-search_icon'
+    iconClassName: 'iconfont icon-11101'
   }
 ]

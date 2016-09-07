@@ -4,6 +4,19 @@
   }
   .traceList table{
     line-height: 30px;
+    font-size: 13px;
+    text-align: center;
+  }
+  .btn-red{
+    background: #2bb56f;
+    border-color:#2bb56f;
+  }
+  .btn-red:hover{
+    background: #0f7e46;
+    border-color: #2bb56f;
+  }
+  .span{ text-align: center; }
+  .table td, .table th{
     text-align: center;
   }
 </style>
@@ -16,20 +29,12 @@
         <h3>店员列表</h3>
         <form>
           <div class="right">
-            <select style="width: 100px; font-size: 18px; margin-left: 10px;" v-model="info.supplier_id">
-              <option value="0" >不限</option>
-              <option  v-for="option in info.supplierList" v-bind:value="option.shopper_id">{{ option.company_name }}</option>
-            </select>
-            <select style="width: 100px; font-size: 18px; margin-left: 10px;"  v-model="info.servicer_id">
+            <select style="width: 100px; font-size: 18px; margin-left: 10px;"  v-model="info.shop_id">
               <option value="0">不限</option>
               <option value="volvo" v-for="option in info.servicerList" v-bind:value="option.shopper_id">{{ option.company_name }}</option>
             </select>
-            <select style="width: 100px; font-size: 18px; margin-left: 10px;" v-model="info.shopper_id">
-              <option value="0">不限</option>
-              <option value="volvo" v-for="option in info.traceList" v-bind:value="option.shopper_id">{{ option.fullname}}</option>
-            </select>
-            <input type="text" class="input" v-model="info.keyword">
-            <button class="btn btn-small" type="button">搜索</button>
+            <input type="text" class="input" placeholder="请输入关键词" style="margin-left: 10px" v-model="info.keyword">
+            <button class="btn btn-small" type="button" @click="onPagePull"><i class="icon icon-search" ></i> </button>
           </div>
         </form>
       </div>
@@ -41,24 +46,26 @@
                 <tr>
                   <th width="30">#</th>
                   <th>姓名</th>
-                  <th>店铺</th>
+                  <th>状态</th>
+                  <th width="16%">店铺</th>
                   <th>职位</th>
                   <th>手机</th>
-                  <th>最后一次登录时间</th>
+                  <th width="20%">最后一次登录时间</th>
                   <th>操作</th>
                 </tr>
               </thead>
               <tbody>
-                  <tr v-for="item in info.traceList">
+                  <tr v-for="item in info.shopemployeesList">
                   <td>{{item.shopper_id}}</td>
                   <td>{{item.fullname}}</td>
+                  <td>{{item.is_checked}}</td>
                   <td>{{item.company_name}}</td>
-                  <td>{{item.introduce}}</td>
+                  <td>{{item.job}}</td>
                   <td>{{item.mobile}}</td>
                   <td>{{item.created}}</td>
                   <td>
                     <div class="check-buttons">
-                      <button type="button" class="btn btn-red btn-small" style="width: 60px;" @click="showDialog(item)">自我介绍</button>
+                      <button type="button" class="btn btn-red btn-small" style="width: 60px;" @click="showDialog(item.introduce)">自我介绍</button>
                     </div>
                   </td>
                 </tr>
@@ -67,13 +74,13 @@
             <div class="pagination-container" >
                 <el-pagination
                   layout="prev, pager, next, jumper, slot, ->, total"
-                  :total="info.total" :current-page.sync="info.page_index" :page-size="info.page_size" @current-change="onPageChange" @size-change="onPageChange">
+                  :total="info.total" :current-page.sync="info.page_index" :page-size="info.page_size" @current-change="onPagePull" @size-change="onPagePull">
                 </el-pagination>
             </div>
           </div>
-          <el-dialog title="自我介绍" :visible.sync="info.dialogVisible" v-model="info.shopper_id">
-            <span>{{{info.currentUser.fullname}}</span><span>{{info.currentUser.company_name}}</span><span>{{info.currentUser.introduce}}</span>
-              <span slot="footer" class="dialog-footer">
+              <el-dialog title="自我介绍" :visible.sync="info.dialogVisible" >
+                <span>{{info.introduce}}</span>
+                <span slot="footer" class="dialog-footer">
               <el-button type="primary" @click="info.dialogVisible = false">确 定</el-button>
               </span>
             </el-dialog>
@@ -97,19 +104,17 @@
           { name: '管理用户' },
           { name: '店员列表' }
         ],
+        updateing: false,
         info: {
-          traceList: [],
-          supplierList: [],
+          shopemployeesList: [],
+          introduce: '',
           servicerList: [],
-          shopList: [],
           supplier_id: 0,
-          servicer_id: 0,
           shop_id: 0,
           page_index: 1,
           page_size: 10,
           keyword: '',
           total: 1,
-          dialogContent: '',
           shopper_id: 0,
           dialogVisible: false,
           currentUser: {}
@@ -117,7 +122,7 @@
       }
     },
     created () {
-      this.onPageChange(1, 1)
+      this.onPagePull()
       const self = this
       shopper.supplierDropdownList().then(function (res) {
         self.info.supplierList = res.data
@@ -127,17 +132,23 @@
       })
     },
     methods: {
-      showDialog (item) {
-        console.log(item)
-        this.info.currentUser = item
+      showDialog (introduce) {
         this.info.dialogVisible = true
+        this.info.introduce = introduce
       },
-      onPageChange: function () {
+      onSearch: function () {
+        this.updateing = true
+        this.onPagePull()
+      },
+      onPagePull: function () {
         const self = this
         shopper.shopinferior({keyword: this.info.keyword, shop_id: this.info.shop_id, page_index: this.info.page_index, page_size: this.info.page_size}).then(function (res) {
-          self.info.traceList = res.data
+          self.updateing = false
+          self.info.shopemployeesList = res.data
           self.info.total = res.data_count
+          console.log('......xxx...........')
         }, function (res) {
+          self.updateing = false
           self.$notify({
             title: '拉取失败',
             message: res.tips,

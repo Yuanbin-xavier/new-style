@@ -1,7 +1,7 @@
 <template>
   <div class="single-image-uploader-box">
     <label :for="'profile-upload-' + uniqueId" class="single-upload-label">
-    <img :src="imageSrc" alt="" class="profile-image"
+    <img :src.sync="imageSrc" alt="" class="profile-image"
          v-bind:class="{'processing' : uploading, 'large': size === 'large', 'round': shape === 'round', 'full': size === 'full', 'rectangle': shape === 'rectangle' }"/>
     <input v-on:change="processFile" type="file" :id="'profile-upload-' + uniqueId"/>
     </label>
@@ -165,6 +165,7 @@ module.exports = {
         this.imageSource = defaultImg
         this.deleteBtnShow = false
         this.uploading = true
+        console.log(this.imageSource)
       } else {
         this.imageSource = this.default
         this.uploading = false

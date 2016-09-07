@@ -2,6 +2,9 @@
   .right {
     text-align: right;
   }
+  .table td, .table th{
+    text-align: center;
+  }
 </style>
 
 <template>
@@ -14,26 +17,25 @@
         <form>
           <div class="right">
             <input type="text" class="input" placeholder="请输入关键词" v-model="keyword">
-            <button class="btn btn-small" type="button"><i class="icon icon-search" ></i> </button>
+            <button class="btn btn-small" type="button" @click="onPageChange"><i class="icon icon-search" ></i> </button>
           </div>
         </form>
       </div>
-
       <div class="main-content-bd">
         <div class="main-content-bd-block detail">
           <div class="traceList">
             <table  class="table">
               <thead>
                 <tr>
-                  <th width="30">#</th>
-                  <th>登录手机号</th>
-                  <th>供应商</th>
-                  <th>商家名称</th>
-                  <th>地址</th>
-                  <th>负责人姓名</th>
-                  <th>负责人电话</th>
-                  <th>最后一次登录时间</th>
-                  <th>操作</th>
+                  <th width="20">#</th>
+                  <th width="12%">登录手机号</th>
+                  <th width="15%">供应商</th>
+                  <th width="12%">商家名称</th>
+                  <th width="15%">地址</th>
+                  <th width="10%">负责人姓名</th>
+                  <th width="10%">负责人电话</th>
+                  <th width="18%">最后一次登录时间</th>
+                  <th width="15%">操作</th>
                 </tr>
               </thead>
               <tbody>
@@ -71,11 +73,10 @@
 </template>
 
 <script>
-  import { MPagination, MBreadcrumb } from '../../../../common/components/'
+  import { MBreadcrumb } from '../../../../common/components/'
   import { shopper } from '../../../../api'
   export default {
     components: {
-      MPagination,
       MBreadcrumb
     },
     data () {
@@ -95,7 +96,7 @@
       }
     },
     created () {
-      this.onPageChange(1, 1)
+      this.onPageChange()
     },
     methods: {
       onDelete () {

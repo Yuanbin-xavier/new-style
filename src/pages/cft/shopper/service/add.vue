@@ -47,13 +47,13 @@
             <div class="form-block">
               <div class="row">
                 <div class="col-4">
-                  <m-image-uploader unique-id="1" @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
+                  <m-image-uploader unique-id="1" :default="info.pic1"  @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
                 </div>
                 <div class="col-4">
-                  <m-image-uploader unique-id="2" @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
+                  <m-image-uploader unique-id="2" :default="info.pic2"  @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
                 </div>
                 <div class="col-4">
-                  <m-image-uploader unique-id="3" @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
+                  <m-image-uploader unique-id="3" :default="info.pic3"  @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
                 </div>
               </div>
             </div>

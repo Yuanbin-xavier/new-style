@@ -2,6 +2,9 @@
   .right {
     text-align: right;
   }
+  .table td, .table th{
+    text-align: center;
+  }
 </style>
 
 <template>
@@ -14,7 +17,7 @@
         <form>
           <div class="right">
             <input type="text" class="input" placeholder="请输入关键词" v-model="keyword">
-            <button class="btn btn-small" type="button"><i class="icon icon-search" ></i> </button>
+            <button class="btn btn-small" type="button" @click="onPageChange"><i class="icon icon-search" ></i> </button>
           </div>
         </form>
       </div>
@@ -25,14 +28,14 @@
             <table  class="table">
               <thead>
                 <tr>
-                  <th width="30">#</th>
-                  <th>登录手机号</th>
-                  <th>商家名称</th>
-                  <th>地址</th>
-                  <th>负责人姓名</th>
-                  <th>负责人电话</th>
-                  <th>最后一次登录时间</th>
-                  <th>操作</th>
+                  <th width="20">#</th>
+                  <th width="10%">登录账号</th>
+                  <th width="15%">商家名称</th>
+                  <th width="15%">地址</th>
+                  <th width="10%">负责人姓名</th>
+                  <th width="12%">负责人电话</th>
+                  <th width="16%">最后一次登录时间</th>
+                  <th width="15%">操作</th>
                 </tr>
               </thead>
               <tbody>

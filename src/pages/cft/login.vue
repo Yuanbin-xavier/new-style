@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="border">
-      <h1>后台管理系统</h1>
+      <h1>system formwork</h1>
       <div class="row">
         <div class="col-12">
           <label class="form-label">用户名</label>
@@ -9,19 +9,18 @@
         </div>
         <div class="col-12">
           <label class="form-label">密码</label>
-          <input type="password" v-model="password" class="input" required="true">
+          <input type="password" @keyup.enter="onLogin" v-model="password" class="input" required="true">
         </div>
       </div>
       <br/>
       <div class="row">
         <div class="col-12 ">
-          <button class="btn btn-primary btn-block" type="button" @click="onLogin()">登录</button>
+          <button id="#mouse" class="btn btn-primary btn-block" type="button" @click="onLogin()">登录</button>
         </div>
       </div>
     </div>
   </div>
 </template>
-
 <style lang="less" scoped>
   .login{
     margin: 0px auto;
@@ -68,7 +67,7 @@
           admin_name: self.username,
           password: self.password
         }).then(res => {
-          window.location.replace('/')
+          self.$router.go('/')
           self.$notify({
             title: '成功',
             message: res.tips,

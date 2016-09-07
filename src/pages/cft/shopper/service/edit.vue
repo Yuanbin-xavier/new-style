@@ -19,7 +19,7 @@
           <h4>基本信息</h4>
           <hr>
           <div>
-            <label class="form-label">供应商:</label>
+            <label class="form-label">供应商: </label>
             <select class="select"  v-model="info.parent_shopper_id">
               <option v-for="option in supplierList" v-bind:value="option.shopper_id">
                 {{ option.company_name }}
@@ -73,7 +73,7 @@
             <input type="text" class="input" v-model="info.id_card">
           </div>
           <div class="pagination-container" style="text-align: right;">
-            <el-button type="primary" size="large" @click="onSave()" :loading.sync="updateing">保存</el-button>
+            <button class="btn btn-primary btn-small"  @click="onSave()">保存</button>
           </div>
         </div>
       </div>
@@ -82,11 +82,12 @@
 </template>
 
 <script>
-  import { MImageUploader } from '../../../../common/components/'
+  import { MImageUploader, MBreadcrumb } from '../../../../common/components/'
   import { shopper } from '../../../../api'
   export default {
     components: {
-      MImageUploader
+      MImageUploader,
+      MBreadcrumb
     },
     data () {
       return {
@@ -115,6 +116,26 @@
       this.loadInfo()
     },
     methods: {
+      onUploaded: function (uniqueId, res) {
+        uniqueId = parseInt(uniqueId)
+        if (uniqueId === 1) {
+          this.info.pic1 = res.url
+        } else if (uniqueId === 2) {
+          this.info.pic2 = res.url
+        } else if (uniqueId === 3) {
+          this.info.pic3 = res.url
+        }
+      },
+      onRemoved: function (uniqueId) {
+        uniqueId = parseInt(uniqueId)
+        if (uniqueId === 1) {
+          this.info.pic1 = ''
+        } else if (uniqueId === 2) {
+          this.info.pic2 = ''
+        } else if (uniqueId === 3) {
+          this.info.pic3 = ''
+        }
+      },
       onBack: function () {
         this.$router.go({
           name: 'shopper-service-index'
@@ -140,7 +161,7 @@
         this.updateing = true
         shopper.serviceUpdate(this.info).then(function (res) {
           self.$notify({
-            title: '修改成功',
+            title: '发放成功',
             message: res.tips,
             type: 'success'
           })
@@ -150,7 +171,7 @@
         }, function (res) {
           self.updateing = false
           self.$notify({
-            title: '修改失败',
+            title: '发放失败',
             message: res.tips,
             type: 'warning'
           })

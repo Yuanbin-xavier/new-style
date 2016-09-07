@@ -2,10 +2,32 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>车凡提</title>
+    <title>system formwork</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//cdn.bootcss.com/loaders.css/0.1.2/loaders.min.css" rel="stylesheet">
+    <style type="text/css">
+      .loaders{
+        height: 100%;
+        width: 100%;
+      }
+      .loaders .loader{
+        width: 100px;
+        margin:25% auto;
+      }
+      .square-spin div{
+        background-color: #4993e5;
+        border:1px solid #e1e8ef;
+      }
+    </style>
   </head>
   <body>
+    <div class="loaders" id="loading">
+      <div class="loader">
+      <div class="loader-inner square-spin">
+        <div></div>
+      </div>
+      </div>
+    </div>
     <app></app>
     <!-- built files will be auto injected -->
   </body>

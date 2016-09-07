@@ -1,4 +1,4 @@
-<style scoped>
+<style lang="less" scoped>
   .nav {
     width: 220px;
     background-color: #fff;

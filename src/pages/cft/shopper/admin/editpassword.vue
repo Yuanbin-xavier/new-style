@@ -27,19 +27,15 @@
           <hr>
           <div>
             <label class="form-label">用户名:</label>
-            <input type="text" readonly="readonly" disabled="disabled" class="input" v-model="username">
-          </div>
-          <div>
-            <label class="form-label">原密码:</label>
-            <input type="password" class="input" v-model="info.old_password">
+            <input type="text" readonly="readonly" disabled="disabled" class="input" v-model="info.admin_name">
           </div>
           <div>
             <label class="form-label">密码:</label>
-            <input type="password" class="input" v-model="info.new_password">
+            <input type="password" class="input" v-model="info.password">
           </div>
           <div>
             <label class="form-label">重复密码:</label>
-            <input type="password" class="input" v-model="info.rep_password">
+            <input type="password" class="input" v-model="info.re_password">
           </div>
           <div class="pagination-container" style="text-align: right;">
             <button class="btn btn-primary btn-small"  @click="onSave()">保存</button>
@@ -52,34 +48,45 @@
 
 <script>
   import MBreadcrumb from '../../../../common/components/breadcrumb.vue'
-  import { shopper, user } from '../../../../api'
+  import { shopper } from '../../../../api'
   export default {
     components: {
       MBreadcrumb
     },
     created () {
-      const self = this
-      user.loginProfile().then(function (res) {
-        self.username = res.username
-      })
+      this.onPageChange()
     },
     methods: {
       onSave: function () {
         const self = this
         this.updateing = true
-        shopper.admineditpassword(this.info).then(function (res) {
+        shopper.adminpassword(this.info).then(function (res) {
           self.$notify({
             title: '修改成功',
             message: res.tips,
             type: 'success'
           })
           self.$router.go({
-            name: 'login'
+            name: 'shopper-admin-index'
           })
         }, function (res) {
           self.updateing = false
           self.$notify({
             title: '修改失败',
+            message: res.tips,
+            type: 'warning'
+          })
+        })
+      },
+      onPageChange: function () {
+        console.log('...........change..........', this.$route.params.id)
+        const self = this
+        shopper.admininfo({admin_id: this.$route.params.id}).then(function (res) {
+          self.info = res.data
+          self.pagination.total = res.data_count
+        }, function (res) {
+          self.$notify({
+            title: '拉取失败',
             message: res.tips,
             type: 'warning'
           })
@@ -93,12 +100,11 @@
           { name: '首页' },
           { name: '修改密码' }
         ],
-        adminpassword: [],
-        username: '',
         info: {
-          old_password: '',
-          new_password: '',
-          rep_password: ''
+          admin_name: '',
+          admin_id: '',
+          password: '',
+          re_password: ''
         },
         pagination: {
           total: 1,

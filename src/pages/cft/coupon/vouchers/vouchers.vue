@@ -16,12 +16,11 @@
 
 <template>
   <div class="content">
-  {{orderinfo | json}}
     <m-breadcrumb :items="breadcrumbData"></m-breadcrumb>
     <div class="main-content">
       <div class="main-content-hd">
         <button class="btn btn-white btn-small pull-right" type="button" @click="onBack()">返回</button>
-        <h3>查看抵用券(已审核)</h3>
+        <h3>查看抵用券</h3>
       </div>
       <div class="main-content-bd">
         <div class="main-content-bd-block right">
@@ -29,7 +28,7 @@
           <div>
             <label class="form-label">店铺:</label>
            <input type="text" class="input" disabled="" style="border: none; 
-   background: #fff;"  v-model="info.company_name"  readonly="readonly"/>
+   background: #fff;"  v-model="info.shop_id"  readonly="readonly"/>
           </div>
           <div>
             <label class="form-label">抵用券名称:</label>
@@ -37,7 +36,7 @@
    background: #fff;"  readonly="readonly" readonly="readonly"/>
           <div>
             <label class="form-label">抵用券类型:</label>
-            <input type="text" class="input" v-model="info.refused_desc" style="border: none; 
+            <input type="text" class="input" v-model="info.coupon_type_id" style="border: none; 
   outline:none; background: #fff;"  readonly="readonly" disabled="" readonly="readonly"/>
           </div>
           <div>
@@ -46,7 +45,7 @@
    background: #fff;"  readonly="readonly" readonly="readonly"/>
           <div>
             <label class="form-label">下单用户:</label>
-            <input type="text" class="input" disabled=""  v-model="info.customer_name" style="border: none; 
+            <input type="text" class="input" disabled=""  v-model="info.shopper_id" style="border: none; 
    background: #fff;"  readonly="readonly" readonly="readonly"/>
           </div>
           <div>
@@ -61,7 +60,7 @@
           </div>
           <div>
           <label class="form-label">创建日期:</label>
-            <input v-model="info.expire_datetime" type="text" class="input" disabled="" style="border: none; 
+            <input v-model="info.checked_datetime" type="text" class="input" disabled="" style="border: none; 
    background: #fff;"  readonly="readonly" readonly="readonly"/>
           </div>
           <hr>
@@ -73,7 +72,6 @@
           </div>
           </div>
           <div class="pagination-container" style="text-align: right;">
-            <el-button type="primary" size="large" @click="onBack()" :loading.sync="updateing">确定</el-button>
           </div>
         </div>
       </div>
@@ -96,13 +94,6 @@
           { name: '订单详情' },
           { name: '修改店铺' }
         ],
-        serviceList: [],
-        traceList: [],
-        traceListPagination: {
-          totalCount: 105,
-          offset: 0,
-          limit: 10
-        },
         info: {
           company_name: ''
         },
@@ -124,7 +115,7 @@
     methods: {
       onBack: function () {
         this.$router.go({
-          name: 'trade-order-index'
+          name: 'vouchers-index'
         })
       }
     }

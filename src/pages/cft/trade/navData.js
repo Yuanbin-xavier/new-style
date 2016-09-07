@@ -12,7 +12,7 @@ export default [
       }
     ],
     expanded: true,
-    iconClassName: 'm-icon-search_icon'
+    iconClassName: 'iconfont icon-7701'
   },
   {
     name: '其他设置',
@@ -27,6 +27,6 @@ export default [
       }
     ],
     expanded: true,
-    iconClassName: 'm-icon-search_icon'
+    iconClassName: 'iconfont icon-xt8-copy'
   }
 ]

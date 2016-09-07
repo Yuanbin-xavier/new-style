@@ -5,7 +5,7 @@ const ShopperAction = {
   serviceList (data) {
     return new Promise((resolve, reject) => {
       let params = {keyword: data.keyword}
-      Vue.http.get(`${CFT.BASE_API_URL}/shopper/inferior_join/${data.parent_shopper_id}/${data.page_index}/${data.page_size}`, params).then(function (response) {
+      Vue.http.get(`${CFT.BASE_API_URL}/shopper/inferior_join/${data.parent_shopper_id}/${data.page_index}/${data.page_size}`, {params}).then(function (response) {
         resolve(response.data)
       }, function (response) {
         reject(response.data)
@@ -124,7 +124,7 @@ const ShopperAction = {
   shopList (data) {
     return new Promise((resolve, reject) => {
       let params = {keyword: data.keyword}
-      Vue.http.get(`${CFT.BASE_API_URL}/shopper/inferior_shop/${data.shopperServiceId}/${data.pageIndex}/${data.pageSize}/`, {params}).then(function (response) {
+      Vue.http.get(`${CFT.BASE_API_URL}/shopper/inferior_shop/${data.shopper_id}/${data.page_index}/${data.page_size}/`, {params}).then(function (response) {
         resolve(response.data)
       }, function (response) {
         reject(response.data)
@@ -171,7 +171,7 @@ const ShopperAction = {
   staffList (data) {
     return new Promise((resolve, reject) => {
       let params = {keyword: data.keyword}
-      Vue.http.get(`${CFT.BASE_API_URL}/shopper/shop_clerk/${data.shop_id}/${data.page_index}/${data.shopper_id}${data.page_size}/`, params).then(function (response) {
+      Vue.http.get(`${CFT.BASE_API_URL}/shopper/shop_clerk/${data.shop_id}/${data.page_index}/${data.shopper_id}${data.page_size}/`, {params}).then(function (response) {
         resolve(response.data)
       }, function (response) {
         reject(response.data)
@@ -181,7 +181,7 @@ const ShopperAction = {
   managerList (data) {
     return new Promise((resolve, reject) => {
       let params = {keyword: data.keyword}
-      Vue.http.get(`${CFT.BASE_API_URL}/admin/admin_list/${data.page_index}/${data.page_size}`, params).then(function (response) {
+      Vue.http.get(`${CFT.BASE_API_URL}/admin/admin_list/${data.page_index}/${data.page_size}`, {params}).then(function (response) {
         resolve(response.data)
       }, function (response) {
         reject(response.data)
@@ -191,7 +191,7 @@ const ShopperAction = {
   shopinferior (data) {
     return new Promise((resolve, reject) => {
       let params = {keyword: data.keyword}
-      Vue.http.get(`${CFT.BASE_API_URL}/shopper/shop_clerk/:${data.shop_id}/${data.page_index}/${data.page_size}/`, params).then(function (response) {
+      Vue.http.get(`${CFT.BASE_API_URL}/shopper/shop_clerk/${data.shop_id}/${data.page_index}/${data.page_size}`, {params}).then(function (response) {
         resolve(response.data)
       }, function (response) {
         reject(response.data)
@@ -201,7 +201,7 @@ const ShopperAction = {
   shopperIntroduce (data) {
     return new Promise((resolve, reject) => {
       let params = {keyword: data.keyword}
-      Vue.http.get(`${CFT.BASE_API_URL}/shopper/introduce/${data.shopper_id}/`, params).then(function (response) {
+      Vue.http.get(`${CFT.BASE_API_URL}/shopper/introduce/${data.shopper_id}/`, {params}).then(function (response) {
         resolve(response.data)
       }, function (response) {
         reject(response.data)
@@ -211,7 +211,7 @@ const ShopperAction = {
   adminlist (data) {
     return new Promise((resolve, reject) => {
       let params = {keyword: data.keyword}
-      Vue.http.get(`${CFT.BASE_API_URL}/admin/admin_list/${data.page_index}/${data.page_size}/`, params).then(function (response) {
+      Vue.http.get(`${CFT.BASE_API_URL}/admin/admin_list/${data.page_index}/${data.page_size}/`, {params}).then(function (response) {
         resolve(response.data)
       }, function (response) {
         reject(response.data)
@@ -221,7 +221,7 @@ const ShopperAction = {
   orderlist (data) {
     return new Promise((resolve, reject) => {
       let params = {keyword: data.keyword, begin_date: data.begin_date, end_date: data.end_date, status_id: data.status_id, shop_id: data.shop_id}
-      Vue.http.get(`${CFT.BASE_API_URL}/order/order_list/${data.page_index}/${data.page_size}/`, params).then(function (response) {
+      Vue.http.get(`${CFT.BASE_API_URL}/order/order_list/${data.page_index}/${data.page_size}/`, {params}).then(function (response) {
         resolve(response.data)
       }, function (response) {
         reject(response.data)
@@ -240,7 +240,7 @@ const ShopperAction = {
   orderinancia (data) {
     let params = {begin_date: data.begin_date, end_date: data.end_date}
     return new Promise((resolve, reject) => {
-      Vue.http.get(`${CFT.BASE_API_URL}/order/financial_statements/`, params).then(function (response) {
+      Vue.http.get(`${CFT.BASE_API_URL}/order/financial_statements/`, {params}).then(function (response) {
         resolve(response.data)
       }, function (response) {
         reject(response.data)
@@ -249,8 +249,8 @@ const ShopperAction = {
   },
   couponlist (data) {
     return new Promise((resolve, reject) => {
-      let params = {keyword: data.keyword, shop_id: data.shop_id, status_id: data.status_id}
-      Vue.http.get(`${CFT.BASE_API_URL}/coupon/coupon_list/${data.page_index}/${data.page_size}/`, params).then(function (response) {
+      let params = {keyword: data.keyword, shop_id: data.shop_id, status_id: data.status_id, begin_datetime: data.begin_datetime, end_datetime: data.end_datetime}
+      Vue.http.get(`${CFT.BASE_API_URL}/coupon/coupon_list/${data.page_index}/${data.page_size}/`, {params}).then(function (response) {
         resolve(response.data)
       }, function (response) {
         reject(response.data)
@@ -260,7 +260,7 @@ const ShopperAction = {
   devicelist (data) {
     return new Promise((resolve, reject) => {
       let params = {shop_id: data.shop_id, is_activated: data.is_activated, sn: data.sn}
-      Vue.http.get(`${CFT.BASE_API_URL}/device/device_list/${data.page_index}/${data.page_size}/`, params).then(function (response) {
+      Vue.http.get(`${CFT.BASE_API_URL}/device/device_list/${data.page_index}/${data.page_size}/`, {params}).then(function (response) {
         resolve(response.data)
       }, function (response) {
         reject(response.data)
@@ -278,7 +278,7 @@ const ShopperAction = {
   },
   orderinfo (data) {
     return new Promise((resolve, reject) => {
-      Vue.http.get(`${CFT.BASE_API_URL}/order/  /${data.order_id}/`).then(function (response) {
+      Vue.http.get(`${CFT.BASE_API_URL}/order/order_info/${data.order_id}/`).then(function (response) {
         resolve(response.data)
       }, function (response) {
         reject(response.data)
@@ -294,10 +294,209 @@ const ShopperAction = {
       })
     })
   },
+  admininfo (data) {
+    return new Promise((resolve, reject) => {
+      Vue.http.get(`${CFT.BASE_API_URL}/admin/admin_info/${data.admin_id}/`, data).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
   adminedit (data) {
     return new Promise((resolve, reject) => {
-      let params = {admin_id: data.admin_id}
-      Vue.http.post(`${CFT.BASE_API_URL}/admin/edit_admin/`, params).then(function (response) {
+      Vue.http.post(`${CFT.BASE_API_URL}/admin/edit_admin/`, data).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
+  ordersales (data) {
+    return new Promise((resolve, reject) => {
+      let params = {begin_datetime: data.begin_datetime, end_datetime: data.end_datetime}
+      Vue.http.get(`${CFT.BASE_API_URL}/order/deposit_settlement/${data.page_index}/${data.page_size}`, {params}).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
+  deviceshoplist (data) {
+    return new Promise((resolve, reject) => {
+      Vue.http.get(`${CFT.BASE_API_URL}/device/shop_list/${data.page_index}/${data.page_size}/`, data).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
+  orderdeposit (data) {
+    return new Promise((resolve, reject) => {
+      let params = {begin_datetime: data.begin_datetime, end_datetime: data.end_datetime}
+      Vue.http.get(`${CFT.BASE_API_URL}/order/deposit_settlement/${data.page_index}/${data.page_size}`, {params}).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
+  admindel (data) {
+    return new Promise((resolve, reject) => {
+      Vue.http.post(`${CFT.BASE_API_URL}/admin/del_admin/`, data).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
+  devicegrant (data) {
+    return new Promise((resolve, reject) => {
+      Vue.http.post(`${CFT.BASE_API_URL}/device/grant_device/`, data).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
+  devicdedel (data) {
+    return new Promise((resolve, reject) => {
+      Vue.http.post(`${CFT.BASE_API_URL}/device/del_device/`, data).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
+  admineditpassword (data) {
+    return new Promise((resolve, reject) => {
+      Vue.http.post(`${CFT.BASE_API_URL}/admin/edit_onlin_admin_pass/`, data).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
+  adminpassword (data) {
+    return new Promise((resolve, reject) => {
+      Vue.http.post(`${CFT.BASE_API_URL}/admin/edit_password/`, data).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
+  adminsetislock (data) {
+    return new Promise((resolve, reject) => {
+      Vue.http.post(`${CFT.BASE_API_URL}/admin/set_is_lock/`, data).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
+  shopperinfo (data) {
+    return new Promise((resolve, reject) => {
+      Vue.http.get(`${CFT.BASE_API_URL}/shopper/shopper_info/${data.shopper_id}/`, data).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
+  shoppperdel (data) {
+    return new Promise((resolve, reject) => {
+      Vue.http.post(`${CFT.BASE_API_URL}/shopper/del_shop/`, data).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
+  couponsetpass (data) {
+    return new Promise((resolve, reject) => {
+      Vue.http.post(`${CFT.BASE_API_URL}/coupon/set_pass/`, data).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
+  couponsetnotpass (data) {
+    return new Promise((resolve, reject) => {
+      Vue.http.post(`${CFT.BASE_API_URL}/coupon/set_not_pass/`, data).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
+  adminadd (data) {
+    return new Promise((resolve, reject) => {
+      Vue.http.post(`${CFT.BASE_API_URL}/admin/add_admin/`, data).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
+  allShopCount () {
+    return new Promise((resolve, reject) => {
+      Vue.http.get(`${CFT.BASE_API_URL}/admin/all_shop/`).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
+  allOrderCount () {
+    return new Promise((resolve, reject) => {
+      Vue.http.get(`${CFT.BASE_API_URL}/admin/all_order/`).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
+  orderexcel (data) {
+    return new Promise((resolve, reject) => {
+      Vue.http.get(`${CFT.BASE_API_URL}/order/export_excel/${data.shop_id}/`, data).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
+  adminthismonthaddordernum (data) {
+    return new Promise((resolve, reject) => {
+      Vue.http.get(`${CFT.BASE_API_URL}/admin/this_month_add_order_num/`, data).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
+  addsettlement (data) {
+    return new Promise((resolve, reject) => {
+      Vue.http.post(`${CFT.BASE_API_URL}/order/add_settlement_search`, data).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
+  orderaddsettlement (data) {
+    return new Promise((resolve, reject) => {
+      Vue.http.post(`${CFT.BASE_API_URL}/order/add_settlement`, data).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
+  orderdelbill (data) {
+    return new Promise((resolve, reject) => {
+      Vue.http.post(`${CFT.BASE_API_URL}/order/del_bill`, data).then(function (response) {
         resolve(response.data)
       }, function (response) {
         reject(response.data)

@@ -7,20 +7,20 @@
     background: #fff;
     color: black;
   }
-.form-label {
-  width: 100px;
-  text-align: right;
-  line-height: 50px;
-}
-.main-content-bd input.input {
-  display: inline-block;
-  margin: 0 16px 0 0;
-  width: 300px;
-  height: 30px;
-  line-height: 30px;
-  font-size: 12px;
-}
-
+  .form-label {
+    width: 100px;
+    text-align: right;
+    line-height: 50px;
+  }
+  .main-content-bd input.input {
+    display: inline-block;
+    margin: 0 16px 0 0;
+    width: 300px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+    background: #fff;
+  }
 </style>
 
 <template>
@@ -32,28 +32,27 @@
         <div class="main-content-bd">
           <form>
             <label class="form-label">选择店铺：</label>
-            <select style="width: 100px; font-size: 18px; margin-left: 20px;" v-model="shopper_id">
+            <select style="width: 100px; font-size: 18px;" v-model="info.shop_id">
             <option value="0">不限店铺</option>
-            <option value="volvo" v-for="option in supplierList" v-bind:value="option.shopper_id">{{option.fullname}}</option>
+            <option value="volvo" v-for="option in orderles" v-bind:value="option.shop_id">{{option.shop_name}}</option>
           </select>
           </form>
           <form>
             <label class="form-label">设备秘钥：</label>
-            <input type="text" class="input" v-bind:placeholder="accountType === '商户ID' ? '仅支持输入数字' : ' '" v-model="merchantId">
+            <input type="text" class="input" v-model='info.code'>
           </form>
           <form>
             <label class="form-label">设备用户名：</label>
-            <input type="text" class="input" v-bind:placeholder="accountType === '商户ID' ? '仅支持输入数字' : ' '" v-model="merchantId">
+            <input type="text" class="input" v-model='info.account'>
           </form>
           <form>
             <label class="form-label">设备序列号：</label>
-            <input type="text" class="input" v-bind:placeholder="accountType === '商户ID' ? '仅支持输入数字' : ' '" v-model="merchantId">
+            <input type="text" class="input" v-model='info.sn'>
           </form>
-        <div class="main-content-bd-block detail">
+          <div class="main-content-bd-block detail">
           <div class="filter">
-            <button class="btn btn-primary btn-small" @click="save()">发放</button>
+            <el-button style="background:#20a0ff; color:#fff; width:80px; font-size:12px;" type="primary" @click="onSave()" :loading.sync="updateing">保存</el-button>
           </div>
-        </div>
       </div>
     </div>
   </div>
@@ -69,41 +68,62 @@
     data () {
       return {
         breadcrumbData: [
-          { name: '用户管理' },
-          { name: '管理用户' },
-          { name: '加盟商列表' }
+          { name: '配置' },
+          { name: '设备管理' },
+          { name: '设备发放' }
         ],
-        traceList: [],
-        supplierList: [],
-        employeeslist: [],
-        shop_id: 0,
+        orderles: [],
         shopper_id: 0,
-        keyword: '',
+        shop_id: 0,
+        sn: '',
         pagination: {
           total: 1,
           size: 10,
           index: 1
-        }
+        },
+        info: {
+          shop_id: 0,
+          sn: '',
+          account: '',
+          code: ''
+        },
+        updateing: false
       }
     },
     created () {
-      this.onPageChange(1, 1)
-      const self = this
-      shopper.shopinferior({keyword: this.keyword, shopper_id: this.shopper_id, page_index: this.pagination.index, page_size: this.pagination.size}).then(function (res) {
-        self.supplierList = res.data
-        self.pagination.total = res.data_count
-      })
+      this.DeviceGrant(1, 1)
     },
     methods: {
-      onPageChange: function () {
+      DeviceGrant: function () {
         console.log('...........change..........', this.$route.params.id)
         const self = this
-        shopper.oalesrank().then(function (res) {
-          self.traceList = res.data
+        shopper.deviceshoplist({page_index: this.pagination.index, page_size: this.pagination.size}).then(function (res) {
+          self.orderles = res.data
           self.pagination.total = res.data_count
         }, function (res) {
           self.$notify({
             title: '拉取失败',
+            message: res.tips,
+            type: 'warning'
+          })
+        })
+      },
+      onSave: function () {
+        const self = this
+        this.updateing = true
+        shopper.devicegrant(this.info).then(function (res) {
+          self.$notify({
+            title: '发放成功',
+            message: res.tips,
+            type: 'success'
+          })
+          self.$router.go({
+            name: 'device-list'
+          })
+        }, function (res) {
+          self.updateing = false
+          self.$notify({
+            title: '发放失败',
             message: res.tips,
             type: 'warning'
           })

@@ -1,4 +1,4 @@
-import NotFound from '../pages/errors/404.vue'
+// import NotFound from '../pages/errors/404.vue'
 import Login from '../pages/cft/login.vue'
 import Home from '../pages/cft/home/index.vue'
 import HomeIndex from '../pages/cft/home/index/index.vue'
@@ -6,7 +6,6 @@ import ChangePasword from '../pages/cft/home/index/change-passwrd.vue'
 import Shopper from '../pages/cft/shopper/index.vue'
 import Trade from '../pages/cft/trade/index.vue'
 import Coupon from '../pages/cft/coupon/index.vue'
-import Config from '../pages/cft/config/index.vue'
 
 import shopper from '../pages/cft/shopper/supplier/index.vue'
 import ShopperSupplierAdd from '../pages/cft/shopper/supplier/add.vue'
@@ -24,6 +23,8 @@ import Staff from '../pages/cft/shopper/staff/index.vue'
 
 import AdminIndex from '../pages/cft/shopper/admin/index.vue'
 import AdminEdit from '../pages/cft/shopper/admin/edit.vue'
+import AdminEditpassword from '../pages/cft/shopper/admin/editpassword.vue'
+import AdminAdd from '../pages/cft/shopper/admin/add.vue'
 
 import OrderIndex from '../pages/cft/trade/order/index.vue'
 import OrderTop from '../pages/cft/trade/order/top.vue'
@@ -31,26 +32,28 @@ import OrderDetails from '../pages/cft/trade/order/orderdetails.vue'
 
 import BlanaceReport from '../pages/cft/trade/blanace/report.vue'
 import BlanaceBill from '../pages/cft/trade/blanace/bill.vue'
+import BlanaceAdd from '../pages/cft/trade/blanace/add.vue'
 
 import VouchersIndex from '../pages/cft/coupon/vouchers/index.vue'
 import VouchersVouchers from '../pages/cft/coupon/vouchers/vouchers.vue'
 
-import BrandIndex from '../pages/cft/config/brand/index.vue'
+import Config from '../pages/cft/config/index.vue'
+// import BrandIndex from '../pages/cft/config/brand/index.vue'
 import DeviceLinelist from '../pages/cft/config/brand/devicelist.vue'
 import DrandFacility from '../pages/cft/config/brand/facility.vue'
 
 module.exports = {
-  '/': {
+  '/home': {
     component: Home,
     name: 'home',
     auth: true,
     subRoutes: {
-      '/home/index': {
+      '/index': {
         component: HomeIndex,
         auth: true,
         name: 'home-index'
       },
-      '/home/change-password': {
+      '/change-password': {
         component: ChangePasword,
         auth: true,
         name: 'change-password'
@@ -125,6 +128,16 @@ module.exports = {
         component: AdminEdit,
         auth: true,
         name: 'admin-edit'
+      },
+      '/admin/editpassword/:id': {
+        component: AdminEditpassword,
+        auth: true,
+        name: 'admin-editpassword'
+      },
+      '/admin/add': {
+        component: AdminAdd,
+        auth: true,
+        name: 'admin-add'
       }
     }
   },
@@ -157,6 +170,11 @@ module.exports = {
         component: OrderDetails,
         auth: true,
         name: 'order-orderdetails'
+      },
+      'blanace/add': {
+        component: BlanaceAdd,
+        auth: true,
+        name: 'blanace-add'
       }
     }
   },
@@ -183,24 +201,16 @@ module.exports = {
     name: 'config',
     auth: true,
     subRoutes: {
-      '/brand/index': {
-        component: BrandIndex,
-        auth: true,
-        name: 'brand-index'
-      },
       '/brand/devicelist': {
         component: DeviceLinelist,
         auth: true,
         name: 'device-list'
       },
-      '/brand/facility': {
+      '/brand/facility/': {
         component: DrandFacility,
         auth: true,
         name: 'device-facility'
       }
     }
-  },
-  '*': {
-    component: NotFound
   }
 }

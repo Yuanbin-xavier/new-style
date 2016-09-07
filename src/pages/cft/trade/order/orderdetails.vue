@@ -12,6 +12,7 @@
   .col-1 span{
     font-size: 35px;
   }
+  .pj{padding: 170px; padding-bottom: 0; padding-top: 0px; line-height: 15px;}
 </style>
 
 <template>
@@ -34,7 +35,7 @@
           </div>
           <div>
             <label class="form-label">订单状态:</label>
-            <input type="text" class="input" disabled="" v-model="info.pay_datetime"  style="border: none; 
+            <input type="text" class="input" disabled="" v-model="info.status_id"  style="border: none; 
    background: #fff;"  readonly="readonly" readonly="readonly"/>
           <div>
             <label class="form-label">创建时间:</label>
@@ -106,22 +107,13 @@
             </div>
           </div>
           <hr>
-          <div>
-            <div class="form-block">
+          <div class="pj">
             <h4 class="h4">订单评价</h4>
-              <div class="row">
-                <div class="col-1">
-                <span>★★★★☆</span>
-                </div>
-              </div>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>服务专业</span>&nbsp;&nbsp;<span>态度好</span>
-            </div>
+                <p>★★★★☆</p>
+                <br>
+                <span>服务专业</span>&nbsp;&nbsp;<span>态度好</span>
           </div>
           <div class="text">
-              <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget odio.</span>
-          </div>
-          <div class="pagination-container" style="text-align: right;">
-            <el-button type="primary" size="large" @click="onBack()" :loading.sync="updateing">确定</el-button>
           </div>
         </div>
       </div>

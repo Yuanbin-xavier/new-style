@@ -4,6 +4,26 @@
   text-align: right;
   line-height: 50px;
 }
+.right textarea.input {
+  display: inline-block;
+  margin: 0 16px 0 0;
+  width: 300px;
+  height: 60px;
+  line-height: 30px;
+  font-size: 12px;
+}
+.right input.input {
+  display: inline-block;
+  margin: 0 16px 0 0;
+  width: 300px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 12px;
+}
+.form-block{
+  width: 90%;
+  text-align: center;
+}
 </style>
 
 <template>
@@ -11,41 +31,39 @@
     <m-breadcrumb :items="breadcrumbData"></m-breadcrumb>
     <div class="main-content">
       <div class="main-content-hd">
-        <button class="btn btn-white btn-small pull-right" type="button" @click="onBack()">返回</button>
-        <h3>管理员编辑</h3>
+        <button class="btn btn-white btn-small pull-right" @click="onReturn()">返回</button>
+        <h3>管理员添加</h3>
       </div>
       <div class="main-content-bd">
         <div class="main-content-bd-block right">
-          <h4>登录信息</h4>
+          <h4>注册信息</h4>
           <hr>
           <div>
             <label class="form-label">用户名:</label>
-            <input type="text" class="input" disabled="disabled" v-model="info.admin_name">
+            <input type="text" class="input"  v-model="info.admin_name">
           </div>
           <div>
             <label class="form-label">密码:</label>
-            <input type="text" class="input" v-model="info.company_name">
+            <input type="text" class="input" v-model="info.password">
           </div>
           <div>
             <label class="form-label">重复密码:</label>
-            <input type="text" class="input" v-model="info.address">
+            <input type="text" class="input" v-model="info.re_password">
           </div>
-          <hr>
-          <h4>基本信息</h4>
           <div>
             <label class="form-label">姓名:</label>
             <input type="text" class="input" v-model="info.fullname">
           </div>
           <div>
-            <label class="form-label">手机:</label>
+            <label class="form-label">手机号:</label>
             <input type="text" class="input" v-model="info.mobile">
           </div>
           <div>
-            <label class="form-label">E-:MAL</label>
+            <label class="form-label">邮箱:</label>
             <input type="text" class="input" v-model="info.email">
           </div>
           <div class="pagination-container" style="text-align: right;">
-            <button class="btn btn-primary btn-small"  @click="onSave()">保存</button>
+            <el-button type="primary" size="large" @click="onSave()" :loading.sync="updateing">添加</el-button>
           </div>
         </div>
       </div>
@@ -54,66 +72,52 @@
 </template>
 
 <script>
-  import { MImageUploader } from '../../../../common/components/'
+  import { MBreadcrumb, MImageUploader } from '../../../../common/components/'
   import { shopper } from '../../../../api'
   export default {
     components: {
+      MBreadcrumb,
       MImageUploader
     },
     data () {
       return {
         breadcrumbData: [
-          { name: '我的NLE' },
+          { name: '用户管理' },
           { name: '管理用户' },
-          { name: '管理员编辑' }
+          { name: '管理员列表' },
+          { name: '添加管理员' }
         ],
-        admin_id: '',
         info: {
-          email: '',
-          mobile: '',
-          admin_name: '',
-          fullname: ''
         },
         updateing: false
       }
     },
     created () {
-      this.loadInfo()
+      const self = this
+      shopper.serviceDropdownList({supperId: 0}).then(function (res) {
+        self.serviceList = res.data
+      })
     },
     methods: {
-      onBack: function () {
+      onReturn: function () {
         this.$router.go({
-          name: 'shopper-service-index'
-        })
-      },
-      loadInfo: function () {
-        const self = this
-        shopper.admininfo({admin_id: this.$route.params.id}).then(function (res) {
-          self.info = res.data
-        }, function (res) {
-          self.$notify({
-            title: '拉取失败',
-            message: res.tips,
-            type: 'warning'
-          })
+          name: 'shopper-admin-index'
         })
       },
       onSave: function () {
         const self = this
         this.updateing = true
-        shopper.adminedit(this.info).then(function (res) {
+        shopper.adminadd(this.info).then(function (res) {
           self.$notify({
-            title: '修改成功',
+            title: '新增成功',
             message: res.tips,
             type: 'success'
           })
-          self.$router.go({
-            name: 'shopper-admin-index'
-          })
+          window.history.go(-1)
         }, function (res) {
           self.updateing = false
           self.$notify({
-            title: '修改失败',
+            title: '新增失败',
             message: res.tips,
             type: 'warning'
           })
