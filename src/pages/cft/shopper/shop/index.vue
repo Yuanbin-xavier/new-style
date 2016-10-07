@@ -2,7 +2,7 @@
   .right {
     text-align: right;
   }
-  .table td, .table th{
+  .table td, .table th {
     text-align: center;
   }
 </style>

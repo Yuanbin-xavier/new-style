@@ -8,6 +8,6 @@ export default [
       }
     ],
     expanded: true,
-    iconClassName: 'iconfont icon-list-1-copy'
+    iconClassName: 'iconfont icon-coupon-my'
   }
 ]

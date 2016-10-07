@@ -20,7 +20,7 @@
   line-height: 30px;
   font-size: 12px;
 }
-.form-block{
+.form-block {
   width: 90%;
   text-align: center;
 }

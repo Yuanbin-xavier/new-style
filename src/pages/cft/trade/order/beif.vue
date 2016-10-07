@@ -35,7 +35,7 @@
   .filter button {
     margin: 20px 0 20px 100px;
   }
-  .el-date-editor__editor{
+  .el-date-editor__editor {
     height: 30px;
   }
 

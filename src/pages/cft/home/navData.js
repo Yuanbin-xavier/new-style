@@ -12,6 +12,6 @@ export default [
       }
     ],
     expanded: true,
-    iconClassName: 'iconfont icon-list-2-copy'
+    iconClassName: 'iconfont icon-gongxiangtubiaozhuangtaileicaozuolei07'
   }
 ]

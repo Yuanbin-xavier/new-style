@@ -12,6 +12,6 @@ export default [
       }
     ],
     expanded: true,
-    iconClassName: 'iconfont icon-11101'
+    iconClassName: 'iconfont icon-7riqi'
   }
 ]

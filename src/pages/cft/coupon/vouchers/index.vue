@@ -2,25 +2,27 @@
   .right {
     text-align: right;
   }
-  .traceList table{
+  .traceList table {
     line-height: 30px;
     font-size: 13px;
     text-align: center;
   }
   .btn-red{
     background: #2bb56f;
-    border-color:#2bb56f;
+    border-color: #2bb56f;
   }
-  .btn-red:hover{
+  .btn-red:hover {
     background: #0f7e46;
     border-color: #2bb56f;
   }
-  .span{ text-align: center; }
-  .table td, .table th{
-    text-align: 
+  .span {
+    text-align: center;
   }
-  .table td, .table th{
-  text-align: center;
+  .table td, .table th {
+    text-align:
+  }
+  .table td, .table th {
+    text-align: center;
   }
 </style>
 
@@ -41,7 +43,7 @@
             <option value="3">审核通过</option>
             <option value="1">审核拒绝</option>
             <option value="2">待审核</option>
-          </select> 
+          </select>
              <label class="form-label" style="margin-left: 20px;"> 失效时间：</label>
             <span class="align-left">
               <el-date-picker
@@ -102,7 +104,7 @@
         </div>
       </div>
       <el-dialog title="拒绝审核" :visible.sync="dialogVisible">
-          <el-input placeholder="拒绝内容" :value.sync="textarea" :value.sync="refused_desc" name="desc" type="textarea">
+          <el-input placeholder="拒绝内容" :value.sync="refused_desc" name="desc" type="textarea">
 
           </el-input>
             <span slot="footer" class="dialog-footer">
@@ -130,6 +132,7 @@
         ],
         couponList: [],
         orderles: [],
+        pickedDate: [],
         shop_id: 0,
         status_id: 0,
         coupon_rule_id: 0,
@@ -160,13 +163,16 @@
     },
     methods: {
       onPagePull: function () {
-        if (this.pickedDate) {
-          this.begin_datetime = moment(this.pickedDate[0].format('YYYY-MM-DD'))
-          this.end_datetime = moment(this.pickedDate)[1].format('YYYY-MM-DD')
+        if (this.pickedDate.length > 0) {
+          this.begin_datetime = moment(this.pickedDate[0]).format('YYYY-MM-DD 00:00:00')
+          this.end_datetime = moment(this.pickedDate[1]).format('YYYY-MM-DD 23:59:59')
+          console.log(this.pickedDate)
+        } else {
+          this.begin_datetime = this.end_datetime = ''
         }
         console.log('...........change..........', this.$route.params.id)
         const self = this
-        shopper.couponlist({page_index: this.pagination.index, page_size: this.pagination.size, end_datetime: this.end_datetime, begin_datetime: this.begin_datetime, shop_id: this.shop_id, status_id: this.status_id}).then(function (res) {
+        shopper.couponlist({page_index: this.pagination.index, page_size: this.pagination.size, begin_datetime: this.begin_datetime, end_datetime: this.end_datetime, shop_id: this.shop_id, status_id: this.status_id}).then(function (res) {
           self.couponList = res.data
           self.pagination.total = res.data_count
         }, function (res) {
@@ -213,7 +219,7 @@
             type: 'success'
           })
           self.pagination.index = 1
-          self.onPageChange()
+          self.onPagePull()
         }, function (res) {
           self.$notify({
             title: '取消拒绝',

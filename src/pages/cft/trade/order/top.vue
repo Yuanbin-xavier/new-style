@@ -1,14 +1,16 @@
 <style scoped>
-  .traceList table{
+  .traceList table {
     line-height: 30px;
     font-size: 13px;
     text-align: center;
   }
-  .span{ text-align: center; }
-  .table td, .table th{
+  .span {
     text-align: center;
   }
- .right{
+  .table td, .table th {
+    text-align: center;
+  }
+ .right {
   text-align: right;
  }
 </style>
@@ -96,7 +98,7 @@
         shopper_id: 0,
         begin_datetime: '',
         end_datetime: '',
-        pickedDate: null,
+        pickedDate: [],
         keyword: '',
         pagination: {
           total: 1,
@@ -115,9 +117,12 @@
     },
     methods: {
       onPagePull: function () {
-        if (this.pickedDate) {
-          this.begin_datetime = moment(this.pickedDate[0]).format('YYYY-MM-DD')
-          this.end_datetime = moment(this.pickedDate[1]).format('YYYY-MM-DD')
+        if (this.pickedDate.length > 0) {
+          this.begin_datetime = moment(this.pickedDate[0]).format('YYYY-MM-DD 00:00:00')
+          this.end_datetime = moment(this.pickedDate[1]).format('YYYY-MM-DD 23:59:59')
+          console.log(this.pickedDate)
+        } else {
+          this.begin_datetime = this.end_datetime = ''
         }
         console.log('...........change..........', this.$route.params.id)
         const self = this

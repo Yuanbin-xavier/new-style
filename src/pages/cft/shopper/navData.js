@@ -24,6 +24,6 @@ export default [
       }
     ],
     expanded: true,
-    iconClassName: 'iconfont icon-icon_password'
+    iconClassName: 'iconfont icon-fabu'
   }
 ]

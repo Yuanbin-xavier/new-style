@@ -22,14 +22,6 @@
             <label class="form-label">用户名:</label>
             <input type="text" class="input" disabled="disabled" v-model="info.admin_name">
           </div>
-          <div>
-            <label class="form-label">密码:</label>
-            <input type="text" class="input" v-model="info.company_name">
-          </div>
-          <div>
-            <label class="form-label">重复密码:</label>
-            <input type="text" class="input" v-model="info.address">
-          </div>
           <hr>
           <h4>基本信息</h4>
           <div>

@@ -1,7 +1,7 @@
 <style scoped>
 .table td, .table th{
 }
-.right{
+.right {
   text-align: right;
 }
 </style>
@@ -12,10 +12,10 @@
     <div class="main-content">
       <div class="main-content-hd">
        <button class="btn btn-white btn-small pull-right" @click="addBalance()">添加结算</button>
-        <h3>定金结算</h3>
+        <h3>定金结算{{page_index | json}}</h3>
         <form>
         <div class="right">
-          <label class="form-label">结算时间：</label>
+         <label class="form-label" style="margin-left: 20px;"> 结算时间:</label>
           <el-date-picker
               type="daterange"
               placeholder="选择日期范围"
@@ -46,11 +46,11 @@
                   <td>{{item.bill_id}}</td>
                   <td>{{item.shop_id}}</td>
                   <td>{{item.end_datetime}}</td>
-                  <td>{{item.subqty}}</td>
-                  <td>{{item.end_datetime}}</td>
+                  <td>{{item.subtotal}}</td>
+                  <td>{{item.begin_datetime}}</td>
                   <td>
-                    <a href="{{item.scan_file}}" target="_blank"><img src="{{item.scan_file}}" width="50" height="50"></a>
-                  </td>
+<!--                   <a href="{{item.scan_file}}" target="_blank"><img src="{{item.scan_file}}" width="60" height="60"></a>
+ -->                  </td>
                   <td>
                     <div class="check-buttons">
                       <button type="button" class="btn btn-gray btn-small" @click="onRemark(item.remark)" style="width: 60px;">查看备注</button>
@@ -61,10 +61,10 @@
               </tbody>
             </table>
             <div class="pagination-container">
-              <el-pagination
-                  layout="prev, pager, next, jumper, slot, ->, total"
-                  :total="pagination.total" :current-page.sync="pagination.index" :page-size="pagination.size" @current-change="onPagePull" @size-change="onPagePull">
-              </el-pagination>
+                <el-pagination
+                        layout="prev, pager, next, jumper, slot, ->, total"
+                        :total="pagination.total" :current-page.sync="pagination.index" :page-size="pagination.size" @current-change="onPagePull" @size-change="onPagePull">
+                </el-pagination>
             </div>
           </div>
         </div>
@@ -94,17 +94,21 @@
           { name: '其他设置' },
           { name: '定金结算' }
         ],
-        supplierList: [],
         prepaidLhis: [],
-        employeeslist: [],
+        pickedDate: [],
+        end_datetime: '',
+        begin_datetime: '',
         remark: '',
-        page_size: 10,
-        page_index: 1,
-        dialogVisible: false
+        dialogVisible: false,
+        pagination: {
+          total: 1,
+          size: 5,
+          index: 1
+        }
       }
     },
     created () {
-      this.onPagePull()
+      this.onPagePull(1.1)
     },
     methods: {
       onRemark (remark) {
@@ -112,15 +116,16 @@
         this.remark = remark
       },
       onPagePull: function () {
-        if (this.pickedDate) {
-          this.begin_datetime = moment(this.pickedDate[0]).format('YYYY-MM-DD')
-          this.end_datetime = moment(this.pickedDate[1]).format('YYYY-MM-DD')
+        if (this.pickedDate.length > 0) {
+          this.begin_datetime = moment(this.pickedDate[0]).format('YYYY-MM-DD 00:00:00')
+          this.end_datetime = moment(this.pickedDate[1]).format('YYYY-MM-DD 23:59:59')
+          console.log(this.pickedDate)
         } else {
           this.begin_datetime = this.end_datetime = ''
         }
         console.log('...........change..........', this.$route.params.id)
         const self = this
-        shopper.orderdeposit({page_index: this.page_index, page_size: this.page_size, begin_datetime: this.begin_datetime, end_datetime: this.end_datetime}).then(function (res) {
+        shopper.orderdeposit({page_index: this.pagination.index, page_size: this.pagination.size, begin_datetime: this.begin_datetime, end_datetime: this.end_datetime}).then(function (res) {
           self.prepaidLhis = res.data
           self.pagination.total = res.data_count
         }, function (res) {

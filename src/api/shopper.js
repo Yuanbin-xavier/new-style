@@ -221,7 +221,7 @@ const ShopperAction = {
   orderlist (data) {
     return new Promise((resolve, reject) => {
       let params = {keyword: data.keyword, begin_date: data.begin_date, end_date: data.end_date, status_id: data.status_id, shop_id: data.shop_id}
-      Vue.http.get(`${CFT.BASE_API_URL}/order/order_list/${data.page_index}/${data.page_size}/`, {params}).then(function (response) {
+      Vue.http.get(`${CFT.BASE_API_URL}/order/order_list/${data.page_index}/${data.page_size}`, {params}).then(function (response) {
         resolve(response.data)
       }, function (response) {
         reject(response.data)
@@ -469,7 +469,7 @@ const ShopperAction = {
   },
   adminthismonthaddordernum (data) {
     return new Promise((resolve, reject) => {
-      Vue.http.get(`${CFT.BASE_API_URL}/admin/this_month_add_order_num/`, data).then(function (response) {
+      Vue.http.get(`${CFT.BASE_API_URL}/admin/this_month_add_order_num/${data.start_date}/${data.end_date}`, data).then(function (response) {
         resolve(response.data)
       }, function (response) {
         reject(response.data)
@@ -497,6 +497,15 @@ const ShopperAction = {
   orderdelbill (data) {
     return new Promise((resolve, reject) => {
       Vue.http.post(`${CFT.BASE_API_URL}/order/del_bill`, data).then(function (response) {
+        resolve(response.data)
+      }, function (response) {
+        reject(response.data)
+      })
+    })
+  },
+  devicesms (data) {
+    return new Promise((resolve, reject) => {
+      Vue.http.get(`${CFT.BASE_API_URL}/device/sms_send/${data.device_id}`, data).then(function (response) {
         resolve(response.data)
       }, function (response) {
         reject(response.data)

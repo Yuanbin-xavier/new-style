@@ -2,13 +2,13 @@
     .right {
      text-align: right;
     }
-    .table td, .table th{
+    .table td, .table th {
       text-align: center;
     }
-    .el-date-editor__editor{
+    .el-date-editor__editor {
       width: 260px;
     }
-    .el-date-editor__clear, .el-date-editor__trigger{
+    .el-date-editor__clear, .el-date-editor__trigger {
       text-align: left;
     }
   </style>
@@ -26,12 +26,17 @@
               <option value="volvo" v-for="option in orderles" v-bind:value="option.shop_id">{{option.shop_name}}</option>
             </select>
             <select style="width: 100px; font-size: 18px; margin-left: 20px;" v-model='status_id'>
-              <option value="0">支付状态</option>
-              <option value="0">待付款</option>
-              <option value="1">待下单</option>
-              <option value="2">已付款</option>
+              <option value="" selected="selected">支付状态</option>
+              <option value="0">代下单</option>
+              <option value="1">待支付</option>
+              <option value="2">已支付</option>
+              <option value="3">验车完成</option>
+              <option value="4">制定方案并清洗完成</option>
+              <option value="8">订单服务完成</option>
+              <option value="9">订单已评价</option>
+              <option value="10">确认结清尾款</option>
             </select>
-           <layout class="form-label" style="margin-left: 20px;">下单时间:</layout>
+           <label class="form-label" style="margin-left: 20px;">下单时间:</label>
               <span class="align-left">
                 <el-date-picker
                     type="daterange"
@@ -119,7 +124,7 @@
           supplierList: [],
           orderles: [],
           sn: '',
-          status_id: 0,
+          status_id: '',
           shop_id: 0,
           keyword: '',
           pickedDate: null,
@@ -158,6 +163,8 @@
           if (this.pickedDate) {
             this.begin_date = moment(this.pickedDate[0]).format('YYYY-MM-DD')
             this.end_date = moment(this.pickedDate[1]).format('YYYY-MM-DD')
+          } else {
+            this.begin_date = this.end_date = ''
           }
           console.log('...........change..........', this.$route.params.id)
           const self = this

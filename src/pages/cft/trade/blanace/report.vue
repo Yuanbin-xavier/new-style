@@ -1,8 +1,8 @@
   <style scoped>
-  .table td, .table th{
+  .table td, .table th {
     text-align: center;
   }
-  .right1{ 
+  .right1 {
    text-align: right;
    }
   </style>
@@ -38,7 +38,6 @@
                     <th width="10%">订单数量</th>
                     <th width="20%">总额</th>
                     <th width="8%">已结算</th>
-                    <th width="8%">付款时间</th>
                     <th width="10%">未结算</th>
                     <th width="20%">操作</th>
                   </tr>
@@ -50,7 +49,6 @@
                     <td>{{item.order_qty}}</td>
                     <td>{{item.total}}</td>
                     <td>{{item.is_bill}}</td>
-                    <td></td>
                     <td>{{item.not_bill}}</td>
                     <td>
                       <div class="check-buttons">
@@ -90,6 +88,7 @@
           ],
           inancialist: [],
           shop_id: 0,
+          pickedDate: [],
           begin_date: '',
           end_date: '',
           pagination: {
@@ -121,9 +120,11 @@
           })
         },
         onPagePull: function () {
-          if (this.pickedDate) {
-            this.begin_date = moment(this.pickedDate[0]).format('YYYY-MM-DD')
-            this.end_date = moment(this.pickedDate[1]).format('YYYY-MM-DD')
+          if (this.pickedDate.length > 0) {
+            this.begin_date = moment(this.pickedDate[0]).format('YYYY-MM-DD 00:00:00')
+            this.end_date = moment(this.pickedDate[1]).format('YYYY-MM-DD 23:59:59')
+          } else {
+            this.begin_date = this.begin_date = ''
           }
           const self = this
           shopper.orderinancia({begin_date: this.begin_date, end_date: this.end_date}).then(function (res) {

@@ -1,18 +1,31 @@
 <style scoped>
-.right .form-label {
-  width: 150px;
-  text-align: right;
-  line-height: 50px;
-}
-.row{ 
+  .right .form-label {
+    width: 150px;
+    text-align: right;
+    line-height: 50px;
+  }
+  .row {
    margin-left: 50px;
   }
-  .h4{margin-top: 30px;}
-  .text{ width: 60%; padding: 170px; padding-top: 20px; padding-bottom: 0; font-size: 14px}
-  .col-1 span{
+  .h4 {
+    margin-top: 30px;
+  }
+  .text {
+    width: 60%;
+    padding: 170px;
+    padding-top: 20px;
+    padding-bottom: 0;
+    font-size: 14px;
+  }
+  .col-1 span {
     font-size: 35px;
   }
-  .pj{padding: 170px; padding-bottom: 0; padding-top: 0px; line-height: 15px;}
+  .pj {
+    padding: 170px;
+    padding-bottom: 0;
+    padding-top: 0px;
+    line-height: 15px;
+  }
 </style>
 
 <template>
@@ -30,37 +43,37 @@
           <hr>
           <div>
             <label class="form-label">订单编号:</label>
-           <input type="text" class="input" disabled="" style="border: none; 
+           <input type="text" class="input" disabled="" style="border: none;
    background: #fff;"  v-model="info.trade_no"  readonly="readonly"/>
           </div>
           <div>
             <label class="form-label">订单状态:</label>
-            <input type="text" class="input" disabled="" v-model="info.status_id"  style="border: none; 
+            <input type="text" class="input" disabled="" v-model="info.status_id"  style="border: none;
    background: #fff;"  readonly="readonly" readonly="readonly"/>
           <div>
             <label class="form-label">创建时间:</label>
-            <input type="text" class="input" v-model="info.customer_plane_datetime" style="border: none; 
+            <input type="text" class="input" v-model="info.customer_plane_datetime" style="border: none;
   outline:none; background: #fff;"  readonly="readonly" disabled="" readonly="readonly"/>
           </div>
           <div>
             <label class="form-label">付款时间:</label>
-            <input type="text" class="input" disabled="" v-model="info.created" style="border: none; 
+            <input type="text" class="input" disabled="" v-model="info.created" style="border: none;
    background: #fff;"  readonly="readonly" readonly="readonly"/>
           <div>
             <label class="form-label">下单用户:</label>
-            <input type="text" class="input" disabled=""  v-model="info.customer_name" style="border: none; 
+            <input type="text" class="input" disabled=""  v-model="info.customer_name" style="border: none;
    background: #fff;"  readonly="readonly" readonly="readonly"/>
           </div>
           <hr>
           <h4>对应店铺</h4>
           <div>
             <label class="form-label">接待业务员:</label>
-            <input type="text" class="input" disabled="" v-model="info.comment_tag" style="border: none; 
+            <input type="text" class="input" disabled="" v-model="info.comment_tag" style="border: none;
    background: #fff;"  readonly="readonly" readonly="readonly"/>
           </div>
           <div>
             <label class="form-label">对应施工员:</label>
-            <input v-model="info.comment_tag" type="text" class="input" disabled="" style="border: none; 
+            <input v-model="info.comment_tag" type="text" class="input" disabled="" style="border: none;
    background: #fff;"  readonly="readonly" readonly="readonly"/>
           </div>
           <hr>

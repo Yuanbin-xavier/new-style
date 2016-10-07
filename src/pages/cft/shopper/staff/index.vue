@@ -2,21 +2,23 @@
   .right {
     text-align: right;
   }
-  .traceList table{
+  .traceList table {
     line-height: 30px;
     font-size: 13px;
     text-align: center;
   }
-  .btn-red{
+  .btn-red {
     background: #2bb56f;
     border-color:#2bb56f;
   }
-  .btn-red:hover{
+  .btn-red:hover {
     background: #0f7e46;
     border-color: #2bb56f;
   }
-  .span{ text-align: center; }
-  .table td, .table th{
+  .span {
+    text-align: center;
+  }
+  .table td, .table th {
     text-align: center;
   }
 </style>

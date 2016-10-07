@@ -1,15 +1,23 @@
 <style scoped>
-.right .form-label {
-  width: 150px;
-  text-align: right;
-  line-height: 50px;
-}
-.row{ 
+  .right .form-label {
+    width: 150px;
+    text-align: right;
+    line-height: 50px;
+  }
+  .row {
    margin-left: 50px;
   }
-  .h4{margin-top: 30px;}
-  .text{ width: 60%; padding: 170px; padding-top: 20px; padding-bottom: 0; font-size: 14px}
-  .col-1 span{
+  .h4 {
+    margin-top: 30px;
+  }
+  .text {
+    width: 60%;
+    padding: 170px;
+    padding-top: 20px;
+    padding-bottom: 0;
+    font-size: 14px
+  }
+  .col-1 span {
     font-size: 35px;
   }
 </style>
@@ -27,47 +35,48 @@
           <hr>
           <div>
             <label class="form-label">店铺:</label>
-           <input type="text" class="input" disabled="" style="border: none; 
+           <input type="text" class="input" disabled="" style="border: none;
    background: #fff;"  v-model="info.shop_id"  readonly="readonly"/>
           </div>
           <div>
             <label class="form-label">抵用券名称:</label>
-            <input type="text" class="input" disabled="" v-model="info.coupon_name"  style="border: none; 
-   background: #fff;"  readonly="readonly" readonly="readonly"/>
+            <input type="text" class="input" disabled="" v-model="info.coupon_name"  style="border: none;
+   background: #fff;"  readonly="readonly" />
           <div>
             <label class="form-label">抵用券类型:</label>
-            <input type="text" class="input" v-model="info.coupon_type_id" style="border: none; 
-  outline:none; background: #fff;"  readonly="readonly" disabled="" readonly="readonly"/>
+            <input type="text" class="input" v-model="info.coupon_type_id" style="border: none;
+  outline:none; background: #fff;"  readonly="readonly" disabled="" />
           </div>
           <div>
             <label class="form-label">最低消费</label>
-            <input type="text" class="input" disabled="" v-model="info.min_payment" style="border: none; 
-   background: #fff;"  readonly="readonly" readonly="readonly"/>
+            <input type="text" class="input" disabled="" v-model="info.min_payment" style="border: none;
+   background: #fff;"  readonly="readonly" />
           <div>
             <label class="form-label">下单用户:</label>
-            <input type="text" class="input" disabled=""  v-model="info.shopper_id" style="border: none; 
-   background: #fff;"  readonly="readonly" readonly="readonly"/>
+            <input type="text" class="input" disabled=""  v-model="info.shopper_id" style="border: none;
+   background: #fff;"  readonly="readonly" />
           </div>
           <div>
             <label class="form-label">生成数量:</label>
-            <input type="text" class="input" disabled="" v-model="info.qty" style="border: none; 
-   background: #fff;"  readonly="readonly" readonly="readonly"/>
+            <input type="text" class="input" disabled="" v-model="info.qty" style="border: none;
+   background: #fff;"  readonly="readonly"/>
           </div>
           <div>
             <label class="form-label">失效日期:</label>
-            <input v-model="info.expire_datetime" type="text" class="input" disabled="" style="border: none; 
-   background: #fff;"  readonly="readonly" readonly="readonly"/>
+            <input v-model="info.expire_datetime" type="text" class="input" disabled="" style="border: none;
+   background: #fff;"  readonly="readonly" />
           </div>
           <div>
           <label class="form-label">创建日期:</label>
-            <input v-model="info.checked_datetime" type="text" class="input" disabled="" style="border: none; 
-   background: #fff;"  readonly="readonly" readonly="readonly"/>
+            <input v-model="info.checked_datetime" type="text" class="input" disabled="" style="border: none;
+   background: #fff;"  readonly="readonly"/>
           </div>
           <hr>
            <div>
+          <label class="form-label">使用数量:</label>
+            <input v-model="info.qty" type="text" class="input" disabled="" style="border: none;  background: #fff;"; readonly="readonly" />
           <label class="form-label">数量:</label>
-            <input v-model="info.qty" type="text" class="input" disabled="" style="border: none; 
-   background: #fff;"  readonly="readonly" readonly="readonly"/>
+            <input v-model="info.qty" type="text" class="input" disabled="" style="border: none;  background: #fff;"; readonly="readonly"/>
           </div>
           </div>
           </div>

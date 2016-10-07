@@ -2,10 +2,10 @@
   .right {
     text-align: right;
   }
-  .table{
+  .table {
     line-height: 30px;
   }
-  .table td, .table th{
+  .table td, .table th {
     text-align: center;
   }
 </style>
@@ -160,7 +160,7 @@
       onLogin () {
         const self = this
         let checkedList = []
-        this.traceList.forEach(function (val, index) {
+        this.administratorList.forEach(function (val, index) {
           if (val.checked) {
             checkedList.push(val.admin_id)
           }
@@ -198,7 +198,7 @@
         })
       },
       onReverse: function () {
-        this.traceList.forEach(function (val, index) {
+        this.administratorList.forEach(function (val, index) {
           val.checked = !val.checked
         })
       },

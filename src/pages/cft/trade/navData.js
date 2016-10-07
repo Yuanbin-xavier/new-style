@@ -12,7 +12,7 @@ export default [
       }
     ],
     expanded: true,
-    iconClassName: 'iconfont icon-7701'
+    iconClassName: 'iconfont icon-forms'
   },
   {
     name: '其他设置',
@@ -27,6 +27,6 @@ export default [
       }
     ],
     expanded: true,
-    iconClassName: 'iconfont icon-xt8-copy'
+    iconClassName: 'iconfont icon-shezhi'
   }
 ]

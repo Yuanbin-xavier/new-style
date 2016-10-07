@@ -5,7 +5,7 @@
         <span>车凡提</span>
       </h1>
       <p class="main-account">
-        <span class="iconfont">&#xe609;</span>
+        <span class="iconfont">&#xe602;</span>
         <span class="username">{{username}} </span><a href="JavaScript:" @click="signout()">登出</a>
       </p>
       <ul class="main-nav">

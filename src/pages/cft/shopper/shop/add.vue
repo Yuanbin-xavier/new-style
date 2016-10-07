@@ -20,7 +20,7 @@
   line-height: 30px;
   font-size: 12px;
 }
-.form-block{
+.form-block {
   width: 90%;
   text-align: center;
 }
@@ -54,7 +54,7 @@
             <label class="form-label">店铺LOGO:</label>
             <div class="form-block" style="width:100px">
               <m-image-uploader unique-id="0" :default="info.logo" @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
-            </div>  
+            </div>
           </div>
           <div>
             <label class="form-label">店铺介绍:</label>

@@ -20,7 +20,7 @@
   line-height: 30px;
   font-size: 12px;
 }
-.form-block{
+.form-block {
   width: 90%;
   text-align: center;
 }
@@ -54,7 +54,7 @@
             <label class="form-label">店铺LOGO:</label>
             <div class="form-block" style="width:100px">
               <m-image-uploader unique-id="0" :default="info.logo" @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
-            </div>  
+            </div>
           </div>
           <div>
             <label class="form-label">店铺介绍:</label>
@@ -94,7 +94,7 @@
 
           <h4>基础服务</h4>
           <hr>
-          
+
           <div>
             <label class="form-label">服务名称:</label>
             <input type="text" class="input" v-model="info.service_name">
@@ -116,11 +116,11 @@
           </div>
           <div>
             <label class="form-label">定金:</label>
-            <input type="number" class="input" v-model="info.price" number>
+            <input type="number" class="input" v-model="info.deposit" number>
           </div>
           <div>
             <label class="form-label">总价:</label>
-            <input type="number" class="input" v-model="info.deposit" number>
+            <input type="number" class="input" v-model="info.price" number>
           </div>
           <div class="pagination-container" style="text-align: right;">
             <button class="btn btn-primary btn-small"  @click="onSave()">保存</button>

@@ -6,6 +6,9 @@
   .table td, .table th{
     text-align: center;
   }
+  .btn {
+    width: 60px;
+  }
 </style>
 
 <template>
@@ -21,9 +24,8 @@
             <option value="0">店铺</option>
             <option value="volvo" v-for="option in orderles" v-bind:value="option.shop_id">{{option.shop_name}}</option>
           </select>
-
           <select style="width: 100px; font-size: 18px; margin-left: 20px;" v-model="is_activated">
-            <option value="0">激活状态</option>
+            <option selected="selected">激活状态</option>
             <option value="1">已激活</option>
             <option value="0">未激活</option>
           </select>
@@ -44,7 +46,7 @@
                 <th>激活状态</th>
                 <th>激活时间</th>
                 <th>创建时间</th>
-                <th width="80">操作</th>
+                <th width="150">操作</th>
               </tr>
               </thead>
               <tbody>
@@ -57,7 +59,8 @@
               <td>{{item.created}}</td>
               <td>
                 <div class="check-buttons">
-                  <button type="button" class="btn btn-gray btn-small" v-if="device_id != 1" @click="onDelete(item.device_id)">删除</button> 
+                  <button type="button" class="btn btn-gray btn-small" v-if="device_id != 1" @click="onDelete(item.device_id)">删除</button>
+                  <button type="button" class="btn btn-green btn-small"  @click="ontice(item.device_id)">短信通知</button>  
                 </div>
               </tr>
               </tbody>
@@ -107,7 +110,6 @@
       const self = this
       shopper.deviceshoplist({page_index: this.pagination.index, page_size: this.pagination.size}).then(function (res) {
         self.orderles = res.data
-        self.pagination.total = res.data_count
       })
     },
     methods: {
@@ -117,11 +119,10 @@
         })
       },
       onPagePull: function () {
-        console.log('...........change..........', this.$route.params.id)
+        console.log('...........change..........')
         const self = this
         shopper.devicelist({page_index: this.pagination.index, page_size: this.pagination.size, is_activated: this.is_activated, shop_id: this.shop_id, sn: this.sn}).then(function (res) {
           self.devicelist = res.data
-          self.pagination.total = res.data_count
         }, function (res) {
           self.$notify({
             title: '拉取失败',
@@ -136,6 +137,28 @@
           type: 'warning'
         }).then(() => {
           shopper.devicdedel({device_id: id}).then(function (res) {
+            self.$notify({
+              title: '操作成功',
+              message: res.tips,
+              type: 'success'
+            })
+            self.pagination.index = 1
+            self.onPagePull()
+          }, function (res) {
+            self.$notify({
+              title: '操作失败',
+              message: res.tips,
+              type: 'warning'
+            })
+          })
+        })
+      },
+      ontice (id) {
+        const self = this
+        this.$confirm('确定发送短信通知吗?', '提示', {
+          type: 'warning'
+        }).then(() => {
+          shopper.devicesms({device_id: id}).then(function (res) {
             self.$notify({
               title: '操作成功',
               message: res.tips,

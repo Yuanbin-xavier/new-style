@@ -26,18 +26,18 @@
   width: 90%;
   text-align: center;
 }
-.right .form-label[_v-37a33f62]{
-  width: 150px;
+.right .form-label[_v-37a33f62] {
+  width: 190px;
 }
-.single-image-uploader-box[_v-77402400]{
-  margin-left: 60px;
+.single-image-uploader-box[_v-77402400] {
+  margin-left: 95px;
 }
-.right1{
+.right1 {
 }
-.main-content-bd1 h1{ 
-  font-size: 28px; 
-  text-align: center; 
-  padding: 300px; 
+.main-content-bd1 h1{
+  font-size: 28px;
+  text-align: center;
+  padding: 300px;
 }
 </style>
 
@@ -49,7 +49,7 @@
         <h3>添加结算</h3>
         <form>
           <div class="right1">
-          <select style="width: 100px; font-size: 18px; margin-left: 90px;" v-model="shop_id">
+          <select style="width: 100px; font-size: 18px; margin-left: 90px;" v-model="info.shop_id">
             <option value="0">请选择店铺</option>
             <option value="volvo" v-for="option in orderles" v-bind:value="option.shop_id">{{option.shop_name}}</option>
           </select>
@@ -65,24 +65,24 @@
           </div>
         </form>
       </div>
-       <div class="main-content-bd1" v-if="!showResult">         
+       <div class="main-content-bd1" v-if="!showResult">
          <h1>请选择您结算的店铺和周期</h1>
        </div>
        <div class="main-content-bd" v-if="showResult">
         <div class="main-content-bd-block right">
           <div>
             <label class="form-label">本批次结算金额为:</label>
-            <input type="text" class="input" v-model="info.total">
+            <input type="text" class="input" v-model="info.total" disabled="disabled">
           </div>
           <div>
             <label class="form-label">本批次结算订单数量为:</label>
-            <input type="text" class="input" v-model="info.qty">
+            <input type="text" class="input" v-model="info.trade_count" disabled="disabled">
           </div>
            <div>
             <label class="form-label">结算扫描件:</label>
             <div class="form-block" style="width:100px">
               <m-image-uploader unique-id="1" :default="info.scan_file" @on-uploaded="onUploaded" @on-removed="onRemoved"></m-image-uploader>
-            </div>  
+            </div>
           </div>
           <div>
             <label class="form-label">结算备注:</label>
@@ -115,27 +115,22 @@
           { name: '管理订单' },
           { name: '订单管理' }
         ],
-        orderList: [],
-        supplierList: [],
         orderles: [],
-        addsettlement: [],
-        sn: '',
-        status_id: 0,
-        shop_id: 0,
-        keyword: '',
         pickedDate: null,
-        begin_datetime: '',
-        end_datetime: '',
         pagination: {
           total: 1,
           size: 10,
           index: 1
         },
         info: {
-          qty: '',
+          begin_datetime: '',
+          end_datetime: '',
+          total: 0,
+          trade_count: 0,
+          shop_id: 0,
           scan_file: '',
-          remark: '',
-          total: ''
+          qty: '',
+          remark: ''
         },
         showResult: false,
         updateing: false
@@ -145,7 +140,6 @@
       const self = this
       shopper.deviceshoplist({page_index: this.pagination.index, page_size: this.pagination.size}).then(function (res) {
         self.orderles = res.data
-        self.pagination.total = res.data_count
       })
     },
     methods: {
@@ -163,42 +157,41 @@
       },
       onPageChange: function (id) {
         if (this.pickedDate) {
-          this.begin_datetime = moment(this.pickedDate[0]).format('YYYY-MM-DD 00:00:00')
-          this.end_datetime = moment(this.pickedDate[1]).format('YYYY-MM-DD 23:59:59')
+          this.info.begin_datetime = moment(this.pickedDate[0]).format('YYYY-MM-DD 00:00:00')
+          this.info.end_datetime = moment(this.pickedDate[1]).format('YYYY-MM-DD 23:59:59')
         }
         const self = this
-        shopper.addsettlement({shop_id: this.shop_id, begin_datetime: this.begin_datetime, end_datetime: this.end_datetime}).then(function (res) {
-          self.orderList = res.data
-          self.pagination.total = res.data_count
+        shopper.addsettlement(this.info).then(function (res) {
+          console.log(res)
           self.showResult = true
-        }, function (res) {
-          self.$notify({
-            title: '拉取失败',
-            message: res.tips,
-            type: 'warning'
-          })
+          self.info = res.data[0]
         })
       },
       onSave: function () {
         const self = this
         this.updateing = true
-        shopper.orderaddsettlement({shop_id: this.shop_id, begin_datetime: this.begin_datetime, end_datetime: this.end_datetime, total: this.info.total, qty: this.info.qty, scan_file: this.info.scan_file, remark: this.info.remark}).then(function (res) {
-          self.$notify({
-            title: '修改成功',
-            message: res.tips,
-            type: 'success'
+        if (this.pickedDate) {
+          this.info.begin_datetime = moment(this.pickedDate[0]).format('YYYY-MM-DD 00:00:00')
+          this.info.end_datetime = moment(this.pickedDate[1]).format('YYYY-MM-DD 23:59:59')
+
+          shopper.orderaddsettlement({shop_id: this.info.shop_id, scan_file: this.info.scan_file, end_datetime: this.info.end_datetime, qty: this.info.trade_count, begin_datetime: this.info.begin_datetime, remark: this.info.remark}).then(function (res) {
+            self.$notify({
+              title: '修改成功',
+              message: res.tips,
+              type: 'success'
+            })
+            self.$router.go({
+              name: 'blanae-bill'
+            })
+          }, function (res) {
+            self.updateing = false
+            self.$notify({
+              title: '修改失败',
+              message: res.tips,
+              type: 'warning'
+            })
           })
-          self.$router.go({
-            name: 'blanae-bill'
-          })
-        }, function (res) {
-          self.updateing = false
-          self.$notify({
-            title: '修改失败',
-            message: res.tips,
-            type: 'warning'
-          })
-        })
+        }
       }
     }
   }
